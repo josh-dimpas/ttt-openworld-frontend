@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/gloria-hallelujah':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@tailwindcss/vite':
         specifier: ^4.2.2
         version: 4.2.2(vite@8.0.8(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0))
@@ -361,6 +364,9 @@ packages:
   '@eslint/plugin-kit@0.7.1':
     resolution: {integrity: sha512-rZAP3aVgB9ds9KOeUSL+zZ21hPmo8dh6fnIFwRQj5EAZl9gzR7wxYbYXYysAM8CTqGmUGyp2S4kUdV17MnGuWQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+
+  '@fontsource/gloria-hallelujah@5.2.8':
+    resolution: {integrity: sha512-GkIdkqC5eZbUX1jidQtoOdD7JAIq5pU5YzldX6uEcStNMrboXVnH1lafHJNLKrmufxEk7Tq3wg7hmI4kOlcJag==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1848,6 +1854,8 @@ snapshots:
     dependencies:
       '@eslint/core': 1.2.1
       levn: 0.4.1
+
+  '@fontsource/gloria-hallelujah@5.2.8': {}
 
   '@humanfs/core@0.19.1': {}
 

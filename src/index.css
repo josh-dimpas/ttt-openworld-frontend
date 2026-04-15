@@ -60,8 +60,8 @@
   --color-success-content: oklch(26% 0.065 152.934);
   --color-warning: oklch(85% 0.199 91.936);
   --color-warning-content: oklch(28% 0.066 53.813);
-  --color-error: oklch(71% 0.202 349.761);
-  --color-error-content: oklch(28% 0.109 3.907);
+  --color-error: oklch(71% 0.194 13.428);
+  --color-error-content: oklch(27% 0.105 12.094);
   --radius-selector: 0.5rem;
   --radius-field: 0.5rem;
   --radius-box: 0.5rem;
@@ -74,4 +74,11 @@
 
 body {
   font-family: 'Gloria Hallelujah', cursive;
+  background-color: var(--color-base-100);
+}
+
+/* Pre-built classes for common ui*/
+
+.btn {
+  @apply btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl;
 }
