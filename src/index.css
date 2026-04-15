@@ -37,3 +37,7 @@
     --depth: 0;
     --noise: 0;
 }
+
+body {
+  font-family: 'Gloria Hallelujah', cursive;
+}
