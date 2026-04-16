@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as JoinGameRouteImport } from './routes/join-game'
 import { Route as CreateGameRouteImport } from './routes/create-game'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const JoinGameRoute = JoinGameRouteImport.update({
+  id: '/join-game',
+  path: '/join-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreateGameRoute = CreateGameRouteImport.update({
   id: '/create-game',
   path: '/create-game',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/create-game': typeof CreateGameRoute
+  '/join-game': typeof JoinGameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/create-game': typeof CreateGameRoute
+  '/join-game': typeof JoinGameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/create-game': typeof CreateGameRoute
+  '/join-game': typeof JoinGameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/create-game'
+  fullPaths: '/' | '/about' | '/create-game' | '/join-game'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/create-game'
-  id: '__root__' | '/' | '/about' | '/create-game'
+  to: '/' | '/about' | '/create-game' | '/join-game'
+  id: '__root__' | '/' | '/about' | '/create-game' | '/join-game'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CreateGameRoute: typeof CreateGameRoute
+  JoinGameRoute: typeof JoinGameRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/join-game': {
+      id: '/join-game'
+      path: '/join-game'
+      fullPath: '/join-game'
+      preLoaderRoute: typeof JoinGameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/create-game': {
       id: '/create-game'
       path: '/create-game'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CreateGameRoute: CreateGameRoute,
+  JoinGameRoute: JoinGameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

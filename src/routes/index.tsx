@@ -19,7 +19,7 @@ function HomePage() {
 
                     <div className="collapse-content flex lg:flex-row flex-col gap-2 px-0! pt-2">
                         <Link to="/create-game" search={{}} className="min-w-20 lg:min-w-45 text-xl uppercase tracking-wider grow btn">Create</Link>
-                        <Link to="/create-game" search={{}} className="min-w-20 lg:min-w-45 text-xl uppercase tracking-wider grow btn">Join</Link>
+                        <Link to="/join-game" search={{}} className="min-w-20 lg:min-w-45 text-xl uppercase tracking-wider grow btn">Join</Link>
                     </div>
 
                 </div>
