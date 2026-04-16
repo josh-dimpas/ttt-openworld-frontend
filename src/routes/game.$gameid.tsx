@@ -1,4 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
+import { Renderer } from '../components/Renderer';
+import { GraphicsController } from '../core/GraphicsController';
 
 export const Route = createFileRoute('/game/$gameid')({
     component: GamePage,
@@ -6,9 +8,14 @@ export const Route = createFileRoute('/game/$gameid')({
 
 function GamePage() {
     const { gameid } = Route.useParams()
+    const controller = new GraphicsController();
+
     return (
-        <div>
-            Game: {gameid}
+        <div className='relative'>
+            <div className="mx-auto container">
+                Game ID: {gameid}
+            </div>
+            <Renderer controller={controller} />
         </div>
     )
 }
