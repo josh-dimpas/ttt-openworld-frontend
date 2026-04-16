@@ -7,24 +7,24 @@ export class MapGen {
         this.seed = args.seed;
     }
 
-    generate_chunk(x: number, y: number) {
+    generateChunk(x: number, y: number) {
         return { x, y };
     }
 
-    generate_chunk_cluster(cx: number, cy: number, radius: number = 1) {
+    generateCluster(cx: number, cy: number, radius: number = 1) {
         // Get amount of chunks from radius
-        const cluster_width = radius * 2 + 1;
-        const chunk_count = cluster_width ** 2;
+        const clusterWidth = radius * 2 + 1;
+        const chunkCount = clusterWidth ** 2;
 
-        const cluster_start = { x: cx - radius, y: cy - radius };
+        const clusterStart = { x: cx - radius, y: cy - radius };
 
-        return Array(chunk_count)
+        return Array(chunkCount)
             .fill(0)
             .map((_, i) => {
-                const [dx, dy] = i2c(i, cluster_width);
-                return this.generate_chunk(
-                    cluster_start.x + dx,
-                    cluster_start.y + dy,
+                const [dx, dy] = i2c(i, clusterWidth);
+                return this.generateChunk(
+                    clusterStart.x + dx,
+                    clusterStart.y + dy,
                 );
             });
     }
