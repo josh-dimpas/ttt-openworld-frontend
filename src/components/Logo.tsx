@@ -1,5 +1,5 @@
 
-export function Logo({ hideOpenWorld = false, className = '' }: { hideOpenWorld?: boolean, className?: string }) {
+export function Logo({ hideOpenWorld = false, className = '' }: React.ComponentProps<'div'> & { hideOpenWorld?: boolean }) {
     return <div className={"relative text-[.5rem] lg:text-[1rem] " + className}>
         <h1 className="text-[6em]">Tic•Tac•Toe</h1>
         {
