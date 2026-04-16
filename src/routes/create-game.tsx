@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import type { SubmitEventHandler } from 'react'
 import { Checkbox } from '../components/daisy/Checkbox'
 import { Input } from '../components/daisy/Input'
 import { DiceIcon } from '../components/icons/Dice'
@@ -32,6 +33,12 @@ function RouteComponent() {
     const [revealRadius, setRevealRadius] = useSearchQuery('revealRadius', defaultConfig.revealRadius, true)
     const [multiplayer, setMultiplayer] = useSearchQuery('multiplayer', false, true)
 
+    const onSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
+        const data = new FormData(e.target);
+        console.log(data);
+    }
+
     return (
         <div className="flex flex-col justify-center mx-auto p-4 max-w-2xl h-full container">
             <div className='pb-6'>
@@ -40,9 +47,10 @@ function RouteComponent() {
 
             <h1 className="mb-6 font-bold text-2xl">Create Game</h1>
 
-            <div className="space-y-4">
+            <form onSubmit={onSubmit} className="space-y-4">
                 <div className="w-full join">
                     <Input
+                        name='mapSeed'
                         type="text"
                         value={mapSeed}
                         onChange={(e) => setMapSeed(e.target.value)}
@@ -54,12 +62,14 @@ function RouteComponent() {
 
                 <div className="gap-4 grid grid-cols-2">
                     <Input
+                        name="winPointsThreshold"
                         label="Win Points Threshold"
                         type="number"
                         value={winPointsThreshold}
                         onChange={(e) => setWinPointsThreshold(Number(e.target.value))}
                     />
                     <Input
+                        name="timeLimit"
                         label="Time Limit Per Turn (seconds)"
                         type="number"
                         value={timeLimit}
@@ -69,6 +79,7 @@ function RouteComponent() {
 
                 <div className="w-full tooltip" data-tip="How many grids will be revealed once a grid has been chosen ">
                     <Input
+                        name="revealRadius"
                         label="Reveal Radius"
                         type="number"
                         value={revealRadius}
@@ -79,6 +90,7 @@ function RouteComponent() {
                 <div className="flex gap-4">
                     <div className="tooltip" data-tip="Everyone will be able to see what anyone revealed">
                         <Checkbox
+                            name="sharedFog"
                             label="Shared Fog"
                             checked={sharedFog}
                             onChange={(e) => setSharedFog(e.target.checked)}
@@ -87,15 +99,20 @@ function RouteComponent() {
 
                     <div className="tooltip" data-tip="Play with someone through the internet">
                         <Checkbox
+                            name="multiplayer"
                             label="Multiplayer"
                             checked={multiplayer}
                             onChange={(e) => setMultiplayer(e.target.checked)}
                         />
                     </div>
                 </div>
-            </div>
 
-            <button className="mt-4 min-w-20 lg:min-w-45 text-xl uppercase tracking-wider btn">Start</button>
+
+                <div>
+                    <input type="submit" className="mt-4 w-full! text-xl uppercase tracking-wider btn" value="Start" />
+                </div>
+            </form>
+
 
         </div>
     )
