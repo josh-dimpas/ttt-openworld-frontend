@@ -72,9 +72,21 @@
   --noise: 1;
 }
 
+/* Application Theme */
+
 body {
   font-family: 'Gloria Hallelujah', cursive;
   background-color: var(--color-base-100);
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  margin: 0;
 }
 
 /* Pre-built classes for common ui*/
@@ -82,3 +94,5 @@ body {
 .btn {
   @apply btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl;
 }
+
+
