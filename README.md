@@ -1,75 +1,53 @@
-# React + TypeScript + Vite
+# OpenWorld TicTacToe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Adding "open-world" to a tic-tac-toe game might be unusual, that is why I made this application to explore more on the idea, along with practicing my organizational design mechanisms and virtualization techniques.
 
-Currently, two official plugins are available:
+## Features
+- Open World 
+    - bigger than 3x3 grid map
+- Fog of War 
+    - initially shows a 3x3 map, but more of the map will reveal on every "play" of a player
+- Modified Game Loop
+    - Lives system, players needs to get more than `1` row/column/diagonal pattern
+    - Boosts, all through out the map, will sometimes appear a "boost" or "powerup" that a player can "activate" that offers different boons/benefits/punishers. Randomly generated but seeded
+- Online - play with someone through websockets (planned as optional way to play)
+- Terrains/Biome
+    - procedural generation where some 'areas' can't be used to "put" on
+    - seeded
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Future Plans
+- Night/Day cycle
+    - Some mechanics of the game changes based on the "time" (based on how many turns has been played)
+- Villages / NPCs
+    - Acts like powerups but can act autonomously in a game 
 
-## React Compiler
+## Main Pain Points:
+These are the items that requires clearly defined details. As of the time of writing, I don't have a clear structure in my head on how to execute and solve these problems, however, I assume they are interconnected to each other.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Rendering Strategy
+- Game loop
+    - Networking
+    - Data Structure
+- Deadline Constraints
 
-Note: This will impact Vite dev & build performances.
 
-## Expanding the ESLint configuration
+### Rendering Strategy
+Since this will be open-world, this means we break the standard rule of a 3x3 grid, this propose multiple challenges, from how the data is stored and displayed. 
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+My plan is to use a "Chunk" based data structure to store coordinates and terrain data. These are all stored as a binary blob. Please refer to [Data Structures: Chunks](#data-structures) for a detailed breakdown on how these chunks are stored.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+These chunks contains coordinate data, this way, we only render the chunks that overlaps within the viewbox. For a faster query of these chunks, we store them in a hashmap where the coordinates is the hash. These map can also act as a cache to improve data fetching from the server.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+As for the terrain rendering, it is done through perlin noise rendered through CanvasAPI (since impossible on css)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The same mechanism on chunk query will be used for the "boost" layer and the "plays" layer (the layer that contains the 'x' and 'o' ) where data is stored as chunks
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Game Loop
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Data Structure
+-   Coordinates: 2 x `16 bit` data<br>
+    Stored inside the first 32 bits of a single chunk. This lets us have a maximum theoretical map of 65535x65535 where each chunk can contain `n` x `n` grid where `n` is the chunk size
+-   Data: `4 bits per grid`<br>
+    Contains the `vector` direction for perlin noise terrain. A size of a single vector direction depends on the `GameConfig`, `4 bits` means 2^4 number of possible vector configurations (16 directions). A chunk with a size of `4` contains 4 x 4 x `4 bits` + 2 x `16 bits` for a total of `80 bits` per chunk
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+In 
