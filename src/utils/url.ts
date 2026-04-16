@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 
 export function useSearchQuery<T>(
     key: string,
-    defaultValue: T,
+    defaultValue?: T,
     alwaysInclude?: boolean
-): [T, (value: T | ((prev: T) => T)) => void] {
-    const getValue = (): T => {
+): [T | undefined, (value: T | ((prev: T) => T)) => void] {
+    const getValue = (): T | undefined => {
         const params = new URLSearchParams(window.location.search)
         const value = params.get(key)
 
@@ -20,11 +20,11 @@ export function useSearchQuery<T>(
         }
     }
 
-    const [value, setValue] = useState<T>(getValue)
+    const [value, setValue] = useState<T | undefined>(getValue)
 
     // One-time initialize: ensure default value is in URL when alwaysInclude is true
     useEffect(() => {
-        if (alwaysInclude) {
+        if (alwaysInclude && defaultValue !== undefined) {
             const params = new URLSearchParams(window.location.search)
             if (!params.has(key)) {
                 params.set(key, JSON.stringify(defaultValue))
@@ -37,10 +37,10 @@ export function useSearchQuery<T>(
     const updateValue = useCallback(
         (newValue: T | ((prev: T) => T)) => {
             const resolvedValue = typeof newValue === 'function'
-                ? (newValue as (prev: T) => T)(value)
+                ? (newValue as (prev: T | undefined) => T)(value)
                 : newValue
 
-            setValue(resolvedValue)
+            setValue(resolvedValue as T)
 
             const params = new URLSearchParams(window.location.search)
             params.set(key, JSON.stringify(resolvedValue))
@@ -53,7 +53,7 @@ export function useSearchQuery<T>(
 
     useEffect(() => {
         const handlePopState = () => {
-            setValue(getValue())
+            setValue(getValue() as T)
         }
 
         window.addEventListener('popstate', handlePopState)
