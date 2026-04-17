@@ -1,6 +1,6 @@
 {
     "$schema": "./node_modules/oxfmt/configuration_schema.json",
-    "tabWidth": 2,
+    "tabWidth": 4,
     "semi": true,
     "printWidth": 100,
     "singleQuote": false,
@@ -8,9 +8,16 @@
     "trailingComma": "all",
     "sortImports": {},
     "sortTailwindcss": {
-        "stylesheet": "./src/styles.css",
-        "attributes": ["class", "className"],
-        "functions": ["clsx", "cn", "cva", "tw"]
+        "attributes": [
+            "class",
+            "className"
+        ],
+        "functions": [
+            "clsx",
+            "cn",
+            "cva",
+            "tw"
+        ]
     },
     "sortPackageJson": true,
     "ignorePatterns": [

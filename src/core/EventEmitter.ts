@@ -30,7 +30,7 @@ export class EventEmitter<T extends Record<string, unknown[]> = Record<string, u
     once(event: string, callback: EventCallback): void;
     once(event: keyof T | string, callback: EventCallback): void {
         const wrapper: EventCallback = (...args: unknown[]) => {
-            callback(...args as any);
+            callback(...(args as any));
             this.off(event, wrapper);
         };
         this.on(event, wrapper);

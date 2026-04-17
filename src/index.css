@@ -37,62 +37,59 @@
     --noise: 0;
 }
 
-
 @plugin "daisyui/theme" {
-  name: "vitesse";
-  default: true;
-  color-scheme: "light";
-  --color-base-100: oklch(98% 0 0);
-  --color-base-200: oklch(96% 0.001 286.375);
-  --color-base-300: oklch(92% 0.004 286.32);
-  --color-base-content: oklch(21% 0.006 285.885);
-  --color-primary: oklch(0% 0 0);
-  --color-primary-content: oklch(100% 0 0);
-  --color-secondary: oklch(84% 0.238 128.85);
-  --color-secondary-content: oklch(27% 0.072 132.109);
-  --color-accent: oklch(70% 0.191 22.216);
-  --color-accent-content: oklch(25% 0.092 26.042);
-  --color-neutral: oklch(14% 0.005 285.823);
-  --color-neutral-content: oklch(98% 0 0);
-  --color-info: oklch(70% 0.165 254.624);
-  --color-info-content: oklch(28% 0.091 267.935);
-  --color-success: oklch(79% 0.209 151.711);
-  --color-success-content: oklch(26% 0.065 152.934);
-  --color-warning: oklch(85% 0.199 91.936);
-  --color-warning-content: oklch(28% 0.066 53.813);
-  --color-error: oklch(71% 0.194 13.428);
-  --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.5rem;
-  --radius-field: 0.5rem;
-  --radius-box: 0.5rem;
-  --size-selector: 0.3125rem;
-  --size-field: 0.3125rem;
-  --border: 1px;
-  --depth: 1;
-  --noise: 1;
+    name: "vitesse";
+    default: true;
+    color-scheme: "light";
+    --color-base-100: oklch(98% 0 0);
+    --color-base-200: oklch(96% 0.001 286.375);
+    --color-base-300: oklch(92% 0.004 286.32);
+    --color-base-content: oklch(21% 0.006 285.885);
+    --color-primary: oklch(0% 0 0);
+    --color-primary-content: oklch(100% 0 0);
+    --color-secondary: oklch(84% 0.238 128.85);
+    --color-secondary-content: oklch(27% 0.072 132.109);
+    --color-accent: oklch(70% 0.191 22.216);
+    --color-accent-content: oklch(25% 0.092 26.042);
+    --color-neutral: oklch(14% 0.005 285.823);
+    --color-neutral-content: oklch(98% 0 0);
+    --color-info: oklch(70% 0.165 254.624);
+    --color-info-content: oklch(28% 0.091 267.935);
+    --color-success: oklch(79% 0.209 151.711);
+    --color-success-content: oklch(26% 0.065 152.934);
+    --color-warning: oklch(85% 0.199 91.936);
+    --color-warning-content: oklch(28% 0.066 53.813);
+    --color-error: oklch(71% 0.194 13.428);
+    --color-error-content: oklch(27% 0.105 12.094);
+    --radius-selector: 0.5rem;
+    --radius-field: 0.5rem;
+    --radius-box: 0.5rem;
+    --size-selector: 0.3125rem;
+    --size-field: 0.3125rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 1;
 }
 
 /* Application Theme */
 
 body {
-  font-family: 'Gloria Hallelujah', cursive;
-  background-color: var(--color-base-100);
+    font-family: "Gloria Hallelujah", cursive;
+    background-color: var(--color-base-100);
 }
 
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
 }
 
-input[type=number] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-  margin: 0;
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0;
 }
 
 /* Pre-built classes for common ui*/
 
 .btn {
-  @apply btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl;
+    @apply btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl;
 }
-
-

@@ -22,14 +22,9 @@ export class MapGen {
             .fill(0)
             .map((_, i) => {
                 const [dx, dy] = i2c(i, clusterWidth);
-                return this.generateChunk(
-                    clusterStart.x + dx,
-                    clusterStart.y + dy,
-                );
+                return this.generateChunk(clusterStart.x + dx, clusterStart.y + dy);
             });
     }
 }
 
-export class Chunk {
-
-}
+export class Chunk {}

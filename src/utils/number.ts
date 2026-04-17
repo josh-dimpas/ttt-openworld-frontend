@@ -6,4 +6,3 @@ export function c2i(x: number, y: number, width?: number): number {
 export function i2c(index: number, width: number) {
     return [index % width, ~~(index / width)];
 }
-

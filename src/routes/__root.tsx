@@ -1,7 +1,7 @@
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 
 const RootLayout = () => (
-    <div className="w-screen h-screen min-h-0">
+    <div className="h-screen min-h-0 w-screen">
         <Outlet />
     </div>
 );
