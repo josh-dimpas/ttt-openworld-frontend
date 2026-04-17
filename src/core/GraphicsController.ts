@@ -1,6 +1,7 @@
 import { EventEmitter } from "./EventEmitter";
 import { GraphicsCameraController } from "./GraphicsController.Camera";
 import { GraphicStatController } from "./GraphicsController.Stat";
+import { GraphicsTerrainController } from "./GraphicsController.Terrain";
 
 type GraphicsControllerEmits = {
     setup: [];
@@ -22,6 +23,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
 
     stat: GraphicStatController;
     camera: GraphicsCameraController;
+    terrain: GraphicsTerrainController;
 
     #running = false;
     #animationId: number | null = null;
@@ -88,6 +90,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         super();
         this.stat = new GraphicStatController(this);
         this.camera = new GraphicsCameraController(this);
+        this.terrain = new GraphicsTerrainController(this);
     }
 
     setup({
@@ -106,6 +109,8 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         this.#setSpacer(spacer);
 
         this.stat.setup();
+        this.terrain.setup();
+
         this.emit("setup");
     }
 
