@@ -1,9 +1,11 @@
 import { EventEmitter } from "./EventEmitter";
+import { GraphicsCameraController } from "./GraphicsController.Camera";
 
 type GraphicsControllerEmits = {
     setup: [];
     frame: [];
     tick: [];
+    dismount: [];
 };
 
 export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
@@ -19,8 +21,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
 
     #statController: GraphicStatController;
 
-    #x = 0;
-    #y = 0;
+    camera: GraphicsCameraController;
 
     #running = false;
     #animationId: number | null = null;
@@ -52,32 +53,31 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         this.emit("frame");
     }
 
-    get x() {
-        return this.#x;
-    }
-    get y() {
-        return this.#y;
-    }
-
     get running() {
         return this.#running;
     }
 
-    get #px() {
+    get px() {
         return this.parent.scrollLeft;
     }
-    get #py() {
+    get py() {
         return this.parent.scrollTop;
     }
 
-    set x(value: number) {
-        this.#x = value;
-        if (this.#x != this.#px) this.parent.scrollBy({ left: value });
+    get pw() {
+        return this.parent.clientWidth;
     }
 
-    set y(value: number) {
-        this.#y = value;
-        if (this.#y != this.#py) this.parent.scrollBy({ top: value });
+    get ph() {
+        return this.parent.clientHeight;
+    }
+
+    get pmx() {
+        return this.#spacer.clientWidth;
+    }
+
+    get pmy() {
+        return this.#spacer.clientHeight;
     }
 
     get ready() {
@@ -87,6 +87,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
     constructor() {
         super();
         this.#statController = new GraphicStatController(this);
+        this.camera = new GraphicsCameraController(this);
     }
 
     setup({
@@ -112,11 +113,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
 
     #setParent(el: HTMLDivElement) {
         this.parent = el;
-
-        el.addEventListener("scroll", () => {
-            this.x = this.#px;
-            this.y = this.#py;
-        });
+        this.camera.bindViewPort(el);
     }
 
     #setCanvas(c: HTMLCanvasElement) {
