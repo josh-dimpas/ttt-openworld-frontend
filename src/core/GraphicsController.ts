@@ -1,5 +1,6 @@
 import { EventEmitter } from "./EventEmitter";
 import { GraphicsCameraController } from "./GraphicsController.Camera";
+import { GraphicStatController } from "./GraphicsController.Stat";
 
 type GraphicsControllerEmits = {
     setup: [];
@@ -19,8 +20,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
     // @ts-expect-error initialized on component mount
     parent: HTMLDivElement;
 
-    #statController: GraphicStatController;
-
+    stat: GraphicStatController;
     camera: GraphicsCameraController;
 
     #running = false;
@@ -86,7 +86,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
 
     constructor() {
         super();
-        this.#statController = new GraphicStatController(this);
+        this.stat = new GraphicStatController(this);
         this.camera = new GraphicsCameraController(this);
     }
 
@@ -104,6 +104,8 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         this.#setParent(parent);
         this.#setCanvas(canvas);
         this.#setSpacer(spacer);
+
+        this.stat.setup();
         this.emit("setup");
     }
 
@@ -121,23 +123,16 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         const ctx = c.getContext("2d");
         if (ctx) this.ctx = ctx;
     }
-}
 
-class GraphicStatController {
-    gc: GraphicsController;
+    dismount() {
+        this.stop();
 
-    constructor(gc: GraphicsController) {
-        this.gc = gc;
+        // Dismount sub-modules
+        this.stat.dismount();
+        this.camera.dismount();
 
-        gc.once("setup", () => {
-            const div = document.createElement("div");
-            div.classList.add("fixed", "z-50", "top-0", "left-0");
+        this.emit("dismount");
 
-            gc.on("frame", () => {
-                div.innerHTML = `x: ${gc.x}, y: ${gc.y}`;
-            });
-
-            gc.parent.appendChild(div);
-        });
+        this.removeAllListeners();
     }
 }
