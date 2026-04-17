@@ -13,16 +13,20 @@ export function Renderer({ controller, className, ...props }: RendererProps) {
     const spacerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        console.log("useEffect");
         if (containerRef.current && canvasRef.current && spacerRef.current) {
-            console.log("refs are found");
             controller.setup({
                 parent: containerRef.current,
                 canvas: canvasRef.current,
                 spacer: spacerRef.current,
             });
+
             controller.start();
         }
+
+        return () => {
+            console.log("dismount");
+            return controller.dismount();
+        };
     }, [controller]);
 
     return (
@@ -31,8 +35,22 @@ export function Renderer({ controller, className, ...props }: RendererProps) {
             ref={containerRef}
             className={`absolute top-0 h-screen w-screen overflow-auto ${className}`}
         >
-            <canvas className="fixed inset-0 h-full w-full bg-transparent" ref={canvasRef} />
-            <div ref={spacerRef} className="relative" style={{ zIndex: 1 }} />
+            <canvas className="fixed inset-0 h-full w-full" ref={canvasRef} />
+            <div
+                ref={spacerRef}
+                className="relative h-750 w-750 bg-transparent"
+                style={{ zIndex: 1 }}
+            />
+            <div className="fixed top-0 right-0 z-10">
+                <button
+                    className="btn btn-sm!"
+                    onClick={() => {
+                        controller.terrain.toggleShowGuidelines();
+                    }}
+                >
+                    Toggle Guidelines
+                </button>
+            </div>
         </div>
     );
 }
