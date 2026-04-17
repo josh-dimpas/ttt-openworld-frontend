@@ -120,6 +120,19 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
 
     #setCanvas(c: HTMLCanvasElement) {
         this.canvas = c;
+
+        const handleResize = () => {
+            c.width = this.pw;
+            c.height = this.ph;
+        };
+        handleResize();
+
+        window.addEventListener("resize", handleResize);
+
+        this.on("dismount", () => {
+            window.removeEventListener("resize", handleResize);
+        });
+
         const ctx = c.getContext("2d");
         if (ctx) this.ctx = ctx;
     }
