@@ -53,5 +53,12 @@
         "oxlint-tsgolint": "^0.20.0",
         "typescript": "~6.0.2",
         "vite": "^8.0.4"
+    },
+    "pnpm": {
+        "peerDependencyRules": {
+            "ignoreMissing": [
+                "eslint"
+            ]
+        }
     }
 }
