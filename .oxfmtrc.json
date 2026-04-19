@@ -8,16 +8,8 @@
     "trailingComma": "all",
     "sortImports": {},
     "sortTailwindcss": {
-        "attributes": [
-            "class",
-            "className"
-        ],
-        "functions": [
-            "clsx",
-            "cn",
-            "cva",
-            "tw"
-        ]
+        "attributes": ["class", "className"],
+        "functions": ["clsx", "cn", "cva", "tw"]
     },
     "sortPackageJson": true,
     "ignorePatterns": [
