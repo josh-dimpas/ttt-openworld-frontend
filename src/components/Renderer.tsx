@@ -35,13 +35,13 @@ export function Renderer({ controller, className, ...props }: RendererProps) {
             ref={containerRef}
             className={`absolute top-0 h-screen w-screen overflow-auto ${className}`}
         >
-            <canvas className="fixed inset-0 h-full w-full" ref={canvasRef} />
+            <canvas className="fixed inset-0 w-full h-full" ref={canvasRef} />
             <div
                 ref={spacerRef}
-                className="relative h-750 w-750 bg-transparent"
+                className="relative bg-transparent w-750 h-750"
                 style={{ zIndex: 1 }}
             />
-            <div className="fixed top-0 right-0 z-10">
+            <div className="top-0 right-0 z-10 fixed">
                 <button
                     className="btn btn-sm!"
                     onClick={() => {
