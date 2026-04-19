@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { Button } from "@/components/ui/button";
+
 import { Logo } from "../components/Logo";
 
 export const Route = createFileRoute("/")({
@@ -8,36 +10,51 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
     return (
-        <div className="container mx-auto flex h-full flex-col items-center p-4">
-            <div className="relative flex shrink grow flex-col items-center gap-2">
+        <div className="flex flex-col items-center mx-auto p-4 h-full container">
+            {/* Header */}
+            {/* ? Should Header be on the layout instead */}
+
+            {/* Menu */}
+            <div className="relative flex flex-col items-center gap-2 pt-[10vh] shrink grow">
                 <Logo />
                 <div className="max-h-[30vh] shrink grow" />
 
                 {/* Play Expansion */}
-                <div className="collapse">
-                    <input type="checkbox" className="peer" />
-                    <button className="collapse-title btn min-w-20 text-xl tracking-wider uppercase peer-checked:bg-neutral-500! peer-checked:text-neutral-700! lg:min-w-45">
-                        Play
-                    </button>
+                <div className="flex flex-col">
+                    <input type="checkbox" className="peer hidden" id="expand" />
+                    <Button
+                        asChild
+                        size={"xl"}
+                        className="bg-destructive peer-checked:bg-primary peer-checked:shadow-none! min-w-92.5 peer-checked:translate-1! select-none"
+                    >
+                        <label htmlFor="expand">Play</label>
+                    </Button>
 
-                    <div className="collapse-content flex flex-col gap-2 px-0! pt-2 lg:flex-row">
-                        <Link
-                            to="/create-game"
-                            search={{}}
-                            className="btn min-w-20 grow text-xl tracking-wider uppercase lg:min-w-45"
-                        >
-                            Create
-                        </Link>
-                        <Link
-                            to="/join-game"
-                            search={{}}
-                            className="btn min-w-20 grow text-xl tracking-wider uppercase lg:min-w-45"
-                        >
-                            Join
-                        </Link>
+                    <div className="hidden peer-checked:flex lg:flex-row flex-col px-0 pl-1">
+                        <Button asChild variant={"secondary"}>
+                            <Link
+                                to="/create-game"
+                                search={{}}
+                                className="min-w-20 lg:min-w-45 text-xl uppercase tracking-wider btn grow"
+                            >
+                                Create
+                            </Link>
+                        </Button>
+                        <Button asChild variant={"accent"}>
+                            <Link
+                                to="/join-game"
+                                search={{}}
+                                className="min-w-20 lg:min-w-45 text-xl uppercase tracking-wider btn grow"
+                            >
+                                Join
+                            </Link>
+                        </Button>
                     </div>
                 </div>
             </div>
+
+            {/* Footer */}
+            {/* ? Should footer be also in the layout */}
         </div>
     );
 }
