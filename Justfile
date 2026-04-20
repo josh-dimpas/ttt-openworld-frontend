@@ -1,5 +1,23 @@
+set shell := ["powershell.exe", "-c"]
+
 default:
     @just --list
+
+# Development
+dev-build:
+    docker-compose build dev
+
+dev-up:
+    docker-compose up dev
+
+dev:
+    docker-compose up dev --build
+
+dev-down:
+    docker-compose down
+
+dev-logs:
+    docker-compose logs -f dev
 
 # Production
 prod-build:
