@@ -1,13 +1,14 @@
+import { DiceThreeIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import type { SubmitEventHandler } from "react";
 
-import { BackButton } from "@/components/ui/BackButton";
+import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { DiceThreeIcon } from '@phosphor-icons/react';
+
 import type { GameConfig } from "../types/game";
 import { random } from "../utils/string";
 import { useSearchQuery } from "../utils/url";
@@ -51,13 +52,12 @@ function RouteComponent() {
     };
 
     return (
-        <div className="flex flex-col justify-center mx-auto p-4 max-w-2xl h-full container">
+        <div className="container mx-auto flex h-full max-w-2xl flex-col justify-center p-4">
             <BackButton />
 
-            <h1 className="mb-6 font-bold text-2xl">Create Game</h1>
+            <h1 className="mb-6 text-2xl font-bold">Create Game</h1>
 
             <form onSubmit={onSubmit} className="space-y-4">
-
                 <Label htmlFor="mapSeed">Map Seed</Label>
                 <div className="flex w-full">
                     <Input
@@ -74,7 +74,7 @@ function RouteComponent() {
                     </Button>
                 </div>
 
-                <div className="gap-4 grid grid-cols-2">
+                <div className="grid grid-cols-2 gap-4">
                     <div>
                         <Label htmlFor="mapSeed">Win Points Threshold</Label>
                         <Input
@@ -95,10 +95,11 @@ function RouteComponent() {
                     </div>
                 </div>
 
-
                 <Label htmlFor="mapSeed">Reveal Radius</Label>
                 <Tooltip delayDuration={0}>
-                    <TooltipContent>How many cells will be revealed once a cell has been chosen</TooltipContent>
+                    <TooltipContent>
+                        How many cells will be revealed once a cell has been chosen
+                    </TooltipContent>
                     <TooltipTrigger className="block w-full">
                         <Input
                             name="revealRadius"
@@ -109,20 +110,7 @@ function RouteComponent() {
                     </TooltipTrigger>
                 </Tooltip>
 
-                <div className="flex gap-4 h-6">
-                    <Tooltip delayDuration={0}>
-                        <TooltipContent>Everyone will be able to see what anyone revealed</TooltipContent>
-                        <TooltipTrigger className="space-x-2">
-                            <Checkbox
-                                name="sharedFog"
-                                id="sharedFog"
-                                checked={sharedFog}
-                                onCheckedChange={(value: boolean) => setSharedFog(value)}
-                            />
-                            <Label htmlFor="sharedFog">Shared Fog</Label>
-                        </TooltipTrigger>
-                    </Tooltip>
-
+                <div className="flex h-6 gap-4">
                     <Tooltip delayDuration={0}>
                         <TooltipContent>Play with someone through the internet</TooltipContent>
                         <TooltipTrigger className="space-x-2">
@@ -135,14 +123,31 @@ function RouteComponent() {
                             <Label htmlFor="multiplayer">Multiplayer</Label>
                         </TooltipTrigger>
                     </Tooltip>
+                    {multiplayer && (
+                        <Tooltip delayDuration={0}>
+                            <TooltipContent>
+                                Everyone will be able to see what anyone revealed
+                            </TooltipContent>
+                            <TooltipTrigger className="space-x-2">
+                                <Checkbox
+                                    name="sharedFog"
+                                    id="sharedFog"
+                                    checked={sharedFog}
+                                    onCheckedChange={(value: boolean) => setSharedFog(value)}
+                                />
+                                <Label htmlFor="sharedFog">Shared Fog</Label>
+                            </TooltipTrigger>
+                        </Tooltip>
+                    )}
                 </div>
 
                 <div>
-                    <input
+                    <Button
                         type="submit"
-                        className="mt-4 w-full! text-xl uppercase tracking-wider btn"
-                        value="Start"
-                    />
+                        className="btn mt-4 w-full! text-xl tracking-wider uppercase"
+                    >
+                        Start
+                    </Button>
                 </div>
             </form>
         </div>
