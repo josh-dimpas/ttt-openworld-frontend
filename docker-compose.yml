@@ -1,0 +1,11 @@
+services:
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://host.docker.internal:8080
+        - VITE_APP_NAME=OpenWorld
+    ports:
+      - "80:80"
+    restart: unless-stopped
