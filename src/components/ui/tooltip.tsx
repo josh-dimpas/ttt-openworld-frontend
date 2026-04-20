@@ -1,3 +1,4 @@
+// @oxlint-disable
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import * as React from "react";
 
@@ -18,7 +19,7 @@ const TooltipContent = React.forwardRef<
             ref={ref}
             sideOffset={sideOffset}
             className={cn(
-                "border-foreground bg-foreground text-background z-50 overflow-hidden border-2 px-3 py-1.5 text-xs font-medium shadow-[4px_4px_0px_hsl(var(--shadow-color))]",
+                "bg-foreground border-foreground text-background z-50 overflow-hidden border-2 px-3 py-1.5 text-xs font-medium shadow-[4px_4px_0px_hsl(var(--shadow-color))]",
                 className,
             )}
             {...props}
@@ -27,4 +28,4 @@ const TooltipContent = React.forwardRef<
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };

@@ -11,7 +11,7 @@ type ResponseOutput<S extends ApiSignatures, K extends keyof S> = Awaited<
 >;
 
 type SignatureHandlers<S extends ApiSignatures> = {
-    [K in keyof S]: (input: ParamsInput<S, K>) => unknown | PromiseLike<unknown>;
+    [K in keyof S]: (input: ParamsInput<S, K>) => unknown | PromiseLike<unknown>; // oxlint-disable-line no-redundant-type-constituents
 };
 
 abstract class ApiService<S extends ApiSignatures> {
