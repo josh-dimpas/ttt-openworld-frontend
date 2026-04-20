@@ -7,7 +7,7 @@ type ExtractResponse<T> = T extends ApiEntrypoint<any, infer R> ? R : AnySchema
 type ParamsInput<S extends ApiSignatures, K extends keyof S> = InferType<ExtractParams<S[K]>>
 type ResponseOutput<S extends ApiSignatures, K extends keyof S> = Awaited<ReturnType<ExtractResponse<S[K]>['validate']>>
 
-type SignatureHandlers<S extends ApiSignatures> = { [K in keyof S]: (input: ParamsInput<S, K>) => PromiseLike<unknown> }
+type SignatureHandlers<S extends ApiSignatures> = { [K in keyof S]: (input: ParamsInput<S, K>) => unknown | PromiseLike<unknown> }
 
 abstract class ApiService<S extends ApiSignatures> {
     protected signatures: S;
