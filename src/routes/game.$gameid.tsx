@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { gameStore } from "@/stores/game";
@@ -50,7 +51,9 @@ function GamePage() {
     const controller = new GraphicsController();
 
     // set store to use game
-    gameStore.game = game;
+    useEffect(() => {
+        gameStore.game = game;
+    });
 
     return (
         <div className="relative">
