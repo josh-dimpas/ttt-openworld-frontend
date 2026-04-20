@@ -45,6 +45,7 @@ export class LocalApiService extends ApiService<ApiSchema> {
                 return { success: true };
             },
 
+            // oxlint-disable-next-line no-redundant-type-constituents
             create_game: (config): unknown | PromiseLike<unknown> => {
                 const id = this.getItem<number>(GAMES_LAST_INDEX, 0) + 1;
 
