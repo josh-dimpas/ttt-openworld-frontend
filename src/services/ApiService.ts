@@ -5,8 +5,10 @@ import type { ApiEntrypoint, ApiSignatures } from "@/types/api";
 type ExtractParams<T> = T extends ApiEntrypoint<infer P, any> ? P : AnySchema;
 type ExtractResponse<T> = T extends ApiEntrypoint<any, infer R> ? R : AnySchema;
 
-type ParamsInput<S extends ApiSignatures, K extends keyof S> = InferType<ExtractParams<S[K]>>;
-type ResponseOutput<S extends ApiSignatures, K extends keyof S> = Awaited<
+export type ParamsInput<S extends ApiSignatures, K extends keyof S> = InferType<
+    ExtractParams<S[K]>
+>;
+export type ResponseOutput<S extends ApiSignatures, K extends keyof S> = Awaited<
     ReturnType<ExtractResponse<S[K]>["validate"]>
 >;
 

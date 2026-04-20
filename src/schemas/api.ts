@@ -2,7 +2,10 @@ import { bool, object, string } from "yup";
 
 import type { ApiSignatures } from "@/types/api";
 
+import { gameConfigSchema, gameSchema } from "./game";
+
 export const apiSchema = {
+    // Auth
     login: {
         params: object({
             username: string().required(),
@@ -21,6 +24,12 @@ export const apiSchema = {
         }),
         response: object({ success: bool().required() }),
     },
+
+    // Games
+    create_game: {
+        params: gameConfigSchema,
+        response: gameSchema,
+    },
 } as const satisfies ApiSignatures;
 
-export type apiSchema = typeof apiSchema;
+export type ApiSchema = typeof apiSchema;

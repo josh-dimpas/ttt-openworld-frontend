@@ -1,6 +1,6 @@
 import { DiceThreeIcon } from "@phosphor-icons/react";
-import { createFileRoute } from "@tanstack/react-router";
-import type { SubmitEventHandler } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
@@ -8,21 +8,22 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import type { GameConfig } from "@/schemas/game";
 
-import type { GameConfig } from "../types/game";
+import { LocalApiService } from "../services/ApiService.Local";
 import { random } from "../utils/string";
 import { useSearchQuery } from "../utils/url";
 
+const api = new LocalApiService();
+
 const createRandomCode = () => random(10, random.ALPHABETIC_LOW);
 const defaultConfig: GameConfig = {
-    mapSeed: createRandomCode(),
+    seed: createRandomCode(),
     chunkSize: 16,
-    vectorOrientation: 0,
     winPointsThreshold: 10,
     sharedFog: false,
     timeLimit: 30,
-    mapSize: { width: 32, height: 32 },
-    revealRadius: 1,
+    revealSize: 1,
 };
 
 export const Route = createFileRoute("/create-game")({
@@ -30,7 +31,8 @@ export const Route = createFileRoute("/create-game")({
 });
 
 function RouteComponent() {
-    const [mapSeed, setMapSeed] = useSearchQuery("mapSeed", defaultConfig.mapSeed, true);
+    const router = useRouter();
+    const [mapSeed, setMapSeed] = useSearchQuery("mapSeed", defaultConfig.seed, true);
     const [winPointsThreshold, setWinPointsThreshold] = useSearchQuery(
         "winPointsThreshold",
         defaultConfig.winPointsThreshold,
@@ -40,16 +42,32 @@ function RouteComponent() {
     const [timeLimit, setTimeLimit] = useSearchQuery("timeLimit", defaultConfig.timeLimit, true);
     const [revealRadius, setRevealRadius] = useSearchQuery(
         "revealRadius",
-        defaultConfig.revealRadius,
+        defaultConfig.revealSize,
         true,
     );
     const [multiplayer, setMultiplayer] = useSearchQuery<boolean>("multiplayer", false, true);
 
-    const onSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
-        e.preventDefault();
-        const data = new FormData(e.target);
-        console.log(data);
-    };
+    const createGameMutation = useMutation({
+        mutationFn: async () => {
+            const config = {
+                seed: mapSeed!,
+                chunkSize: defaultConfig.chunkSize!,
+                winPointsThreshold: winPointsThreshold!,
+                timeLimit: timeLimit!,
+                revealSize: revealRadius!,
+                sharedFog: !multiplayer || sharedFog!,
+            } satisfies GameConfig;
+            console.log(config);
+            return await api.fetch("create_game", config);
+        },
+        onSuccess: (data) => {
+            console.log("Game created:", data);
+            router.navigate({ to: "/game/$gameid", params: { gameid: String(data.id) } });
+        },
+        onError: (error) => {
+            console.error("Error creating game:", error);
+        },
+    });
 
     return (
         <div className="container mx-auto flex h-full max-w-2xl flex-col justify-center p-4">
@@ -57,7 +75,7 @@ function RouteComponent() {
 
             <h1 className="mb-6 text-2xl font-bold">Create Game</h1>
 
-            <form onSubmit={onSubmit} className="space-y-4">
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
                 <Label htmlFor="mapSeed">Map Seed</Label>
                 <div className="flex w-full">
                     <Input
@@ -68,7 +86,11 @@ function RouteComponent() {
                         onChange={(e) => setMapSeed(e.target.value)}
                         className="join-item"
                     />
-                    <Button onClick={() => setMapSeed(createRandomCode())} animation={"pop"}>
+                    <Button
+                        type="button"
+                        onClick={() => setMapSeed(createRandomCode())}
+                        animation={"pop"}
+                    >
                         Randomize
                         <DiceThreeIcon className="size-6!" weight="fill" />
                     </Button>
@@ -111,42 +133,49 @@ function RouteComponent() {
                 </Tooltip>
 
                 <div className="flex h-6 gap-4">
-                    <Tooltip delayDuration={0}>
-                        <TooltipContent>Play with someone through the internet</TooltipContent>
-                        <TooltipTrigger className="space-x-2">
-                            <Checkbox
-                                name="multiplayer"
-                                id="multiplayer"
-                                checked={multiplayer}
-                                onCheckedChange={(value: boolean) => setMultiplayer(value)}
-                            />
-                            <Label htmlFor="multiplayer">Multiplayer</Label>
-                        </TooltipTrigger>
-                    </Tooltip>
-                    {multiplayer && (
+                    <div className="space-x-2">
+                        <Checkbox
+                            name="multiplayer"
+                            id="multiplayer"
+                            checked={multiplayer}
+                            onCheckedChange={(value: boolean) => setMultiplayer(value)}
+                        />
                         <Tooltip delayDuration={0}>
-                            <TooltipContent>
-                                Everyone will be able to see what anyone revealed
-                            </TooltipContent>
-                            <TooltipTrigger className="space-x-2">
-                                <Checkbox
-                                    name="sharedFog"
-                                    id="sharedFog"
-                                    checked={sharedFog}
-                                    onCheckedChange={(value: boolean) => setSharedFog(value)}
-                                />
-                                <Label htmlFor="sharedFog">Shared Fog</Label>
+                            <TooltipContent>Play with someone through the internet</TooltipContent>
+                            <TooltipTrigger>
+                                <Label htmlFor="multiplayer">Multiplayer</Label>
                             </TooltipTrigger>
                         </Tooltip>
+                    </div>
+
+                    {multiplayer && (
+                        <div className="space-x-2">
+                            <Checkbox
+                                name="sharedFog"
+                                id="sharedFog"
+                                checked={sharedFog}
+                                onCheckedChange={(value: boolean) => setSharedFog(value)}
+                            />
+                            <Tooltip delayDuration={0}>
+                                <TooltipContent>
+                                    Everyone will be able to see what anyone revealed
+                                </TooltipContent>
+                                <TooltipTrigger className="space-x-2">
+                                    <Label htmlFor="sharedFog">Shared Fog</Label>
+                                </TooltipTrigger>
+                            </Tooltip>
+                        </div>
                     )}
                 </div>
 
                 <div>
                     <Button
+                        onClick={() => createGameMutation.mutate()}
+                        disabled={createGameMutation.isPending}
                         type="submit"
                         className="btn mt-4 w-full! text-xl tracking-wider uppercase"
                     >
-                        Start
+                        {createGameMutation.isPending ? "Creating..." : "Start"}
                     </Button>
                 </div>
             </form>

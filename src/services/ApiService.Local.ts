@@ -5,15 +5,20 @@
 // This file is the whole "backend", so always remember to minimize the imports from other files to reduce cohesion
 // For the later "actual" backend to be used
 
-import { apiSchema } from "@/schemas/api";
+import { apiSchema, type ApiSchema } from "@/schemas/api";
+import type { GameSchema } from "@/schemas/game";
 import type { User } from "@/schemas/user";
+import { promiseTimeout } from "@/utils/promise";
 
-import { ApiService } from "./ApiService";
+import { ApiService, type ParamsInput } from "./ApiService";
 
 const USERS_KEY = "users";
 const USERS_LAST_INDEX = "users-last-index";
 
-export class LocalApiService extends ApiService<apiSchema> {
+const GAMES_KEY = "games";
+const GAMES_LAST_INDEX = "games-last-index";
+
+export class LocalApiService extends ApiService<ApiSchema> {
     constructor() {
         super(apiSchema, {
             login: (data) => {
@@ -39,14 +44,39 @@ export class LocalApiService extends ApiService<apiSchema> {
                 this.additem(USERS_KEY, { id, username, password });
                 return { success: true };
             },
+
+            create_game: (config): unknown | PromiseLike<unknown> => {
+                const id = this.getItem<number>(GAMES_LAST_INDEX, 0) + 1;
+
+                const game = {
+                    id,
+                    players: [
+                        { turn: 0, revealBuffer: [] },
+                        { turn: 1, revealBuffer: [] },
+                    ],
+                    config: {
+                        seed: config.seed,
+                        chunkSize: config.chunkSize,
+                        winPointsThreshold: config.winPointsThreshold,
+                        timeLimit: config.timeLimit,
+                        revealSize: config.revealSize,
+                        sharedFog: config.sharedFog,
+                    },
+                    state: {
+                        pieceLayer: [],
+                        turn: 0,
+                    },
+                } as GameSchema;
+
+                this.additem(GAMES_KEY, game);
+                return game;
+            },
         });
     }
 
     // Utility Methods
     private additem(key: string, item: any) {
-        const items = this.getItem<any[]>(key);
-        if (!items) throw new Error(`Attempt to add item on a non-existing store with key: ${key}`);
-
+        let items = this.getItem<any[]>(key, []);
         items.push(item);
         this.setItem(key, items);
     }

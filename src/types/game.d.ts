@@ -13,12 +13,10 @@ export interface GamePlayer {
 export interface GameConfig {
     mapSeed: string;
     chunkSize: number;
-    vectorOrientation: number;
     winPointsThreshold: number;
 
     sharedFog: boolean;
     timeLimit: number;
-    mapSize: { width: number; height: number };
     revealRadius: number;
 }
 
