@@ -71,6 +71,13 @@ export class LocalApiService extends ApiService<ApiSchema> {
                 this.additem(GAMES_KEY, game);
                 return game;
             },
+            get_game: ({ id }) => {
+                const data = this.getItem<GameSchema[]>(GAMES_KEY, [])
+                    .filter((g) => g.id === id)
+                    .at(0);
+                if (!data) throw new Error("Game not found");
+                return data;
+            },
         });
     }
 

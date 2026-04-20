@@ -1,4 +1,4 @@
-import { bool, object, string } from "yup";
+import { bool, number, object, string } from "yup";
 
 import type { ApiSignatures } from "@/types/api";
 
@@ -29,6 +29,11 @@ export const apiSchema = {
     create_game: {
         params: gameConfigSchema,
         response: gameSchema,
+    },
+
+    get_game: {
+        params: object({ id: number().required() }),
+        response: gameSchema.optional(),
     },
 } as const satisfies ApiSignatures;
 
