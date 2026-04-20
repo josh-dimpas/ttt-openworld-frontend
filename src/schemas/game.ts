@@ -33,7 +33,7 @@ export const gameConfigSchema = object({
 
 export const gamePlayerSchema = object({
     turn: pieceSchema.required(),
-    revealBuffer: array(number()).required(),
+    revealBuffer: array(number().required()).required(),
 });
 
 export const gameSchema = object({

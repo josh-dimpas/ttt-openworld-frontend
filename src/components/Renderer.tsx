@@ -36,11 +36,7 @@ export function Renderer({ controller, className, ...props }: RendererProps) {
             className={`absolute top-0 h-screen w-screen overflow-auto ${className}`}
         >
             <canvas className="fixed inset-0 h-full w-full" ref={canvasRef} />
-            <div
-                ref={spacerRef}
-                className="relative h-750 w-750 bg-transparent"
-                style={{ zIndex: 1 }}
-            />
+            <div ref={spacerRef} className="relative bg-transparent" style={{ zIndex: 1 }} />
             <div className="fixed top-0 right-0 z-10">
                 <button
                     className="btn btn-sm!"

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
+import { gameStore } from "@/stores/game";
 
 import { Renderer } from "../components/Renderer";
 import { GraphicsController } from "../core/GraphicsController";
@@ -43,8 +44,13 @@ function ErrorComponent({ error }: { error: Error }) {
 
 function GamePage() {
     const { gameid } = Route.useParams();
+
     const game = Route.useLoaderData();
+
     const controller = new GraphicsController();
+
+    // set store to use game
+    gameStore.game = game;
 
     return (
         <div className="relative">
