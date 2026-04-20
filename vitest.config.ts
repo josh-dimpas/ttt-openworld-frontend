@@ -1,6 +1,7 @@
-import { defineConfig } from "vitest/config";
 import path from "path";
+
 import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
     plugins: [tailwindcss()],

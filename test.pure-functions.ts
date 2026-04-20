@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
+
 import * as number from "./src/utils/number";
 import * as string from "./src/utils/string";
 
@@ -94,20 +95,18 @@ describe("string utils", () => {
     describe("random constants", () => {
         it("ALPHANUMERIC contains expected chars", () => {
             expect(string.random.ALPHANUMERIC).toBe(
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890",
             );
         });
 
         it("ALPHABETIC contains expected chars", () => {
             expect(string.random.ALPHABETIC).toBe(
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
             );
         });
 
         it("ALPHANUMERIC_LOW contains expected chars", () => {
-            expect(string.random.ALPHANUMERIC_LOW).toBe(
-                "abcdefghijklmnopqrstuvwxyz1234567890"
-            );
+            expect(string.random.ALPHANUMERIC_LOW).toBe("abcdefghijklmnopqrstuvwxyz1234567890");
         });
 
         it("ALPHABETIC_LOW contains expected chars", () => {

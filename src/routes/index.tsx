@@ -10,12 +10,12 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
     return (
-        <div className="flex flex-col items-center mx-auto p-4 h-full container">
+        <div className="container mx-auto flex h-full flex-col items-center p-4">
             {/* Header */}
             {/* ? Should Header be on the layout instead */}
 
             {/* Menu */}
-            <div className="relative flex flex-col items-center gap-2 pt-[10vh] shrink grow">
+            <div className="relative flex shrink grow flex-col items-center gap-2 pt-[10vh]">
                 <Logo />
                 <div className="max-h-[30vh] shrink grow" />
 
@@ -25,17 +25,17 @@ function HomePage() {
                     <Button
                         asChild
                         size={"xl"}
-                        className="bg-destructive peer-checked:bg-primary peer-checked:shadow-none! min-w-92.5 peer-checked:translate-1! select-none"
+                        className="bg-destructive peer-checked:bg-primary min-w-92.5 select-none peer-checked:translate-1! peer-checked:shadow-none!"
                     >
                         <label htmlFor="expand">Play</label>
                     </Button>
 
-                    <div className="hidden peer-checked:flex lg:flex-row flex-col px-0 pl-1">
+                    <div className="hidden flex-col px-0 pl-1 peer-checked:flex lg:flex-row">
                         <Button asChild variant={"secondary"}>
                             <Link
                                 to="/create-game"
                                 search={{}}
-                                className="min-w-20 lg:min-w-45 text-xl uppercase tracking-wider btn grow"
+                                className="btn min-w-20 grow text-xl tracking-wider uppercase lg:min-w-45"
                             >
                                 Create
                             </Link>
@@ -44,7 +44,7 @@ function HomePage() {
                             <Link
                                 to="/join-game"
                                 search={{}}
-                                className="min-w-20 lg:min-w-45 text-xl uppercase tracking-wider btn grow"
+                                className="btn min-w-20 grow text-xl tracking-wider uppercase lg:min-w-45"
                             >
                                 Join
                             </Link>

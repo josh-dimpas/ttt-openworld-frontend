@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { BitArrayBuilder } from "./src/utils/bytes";
 
 describe("bytes utils", () => {

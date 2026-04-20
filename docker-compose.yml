@@ -1,25 +1,25 @@
 services:
-  dev:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    ports:
-      - "5173:5173"
-    environment:
-      - VITE_API_URL=http://host.docker.internal:8080
-      - VITE_APP_NAME=OpenWorld
-    volumes:
-      - .:/app
-      - /app/node_modules
-    restart: unless-stopped
+    dev:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        ports:
+            - "5173:5173"
+        environment:
+            - VITE_API_URL=http://host.docker.internal:8080
+            - VITE_APP_NAME=OpenWorld
+        volumes:
+            - .:/app
+            - /app/node_modules
+        restart: unless-stopped
 
-  prod:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - VITE_API_URL=http://host.docker.internal:8080
-        - VITE_APP_NAME=OpenWorld
-    ports:
-      - "80:80"
-    restart: unless-stopped
+    prod:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                - VITE_API_URL=http://host.docker.internal:8080
+                - VITE_APP_NAME=OpenWorld
+        ports:
+            - "80:80"
+        restart: unless-stopped

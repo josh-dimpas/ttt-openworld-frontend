@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+
 import { EventEmitter } from "./src/core/EventEmitter";
 import { MapGen, Chunk } from "./src/core/MapGeneration";
 

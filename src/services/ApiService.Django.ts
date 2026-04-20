@@ -1,9 +1,9 @@
-import { apiSchema } from '@/schemas/api';
-import { ApiService } from './ApiService';
+import { apiSchema } from "@/schemas/api";
 
+import { ApiService } from "./ApiService";
 
 export class DjangoApiService extends ApiService<{}> {
     constructor() {
-        super(apiSchema, {})
+        super(apiSchema, {});
     }
 }
