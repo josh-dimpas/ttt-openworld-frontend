@@ -9,7 +9,11 @@
         "lint": "oxlint",
         "lint:fix": "oxlint --fix",
         "preview": "vite preview",
-        "format": "npx oxfmt --write ."
+        "format": "npx oxfmt --write .",
+        "test": "vitest",
+        "test:ui": "vitest --ui",
+        "test:run": "vitest run",
+        "test:watch": "vitest"
     },
     "dependencies": {
         "@base-ui/react": "^1.4.0",
@@ -45,14 +49,17 @@
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
         "@vitejs/plugin-react": "^6.0.1",
+        "@vitest/ui": "^4.1.4",
         "babel-plugin-react-compiler": "^1.0.0",
         "eslint-plugin-react-hooks": "^7.0.1",
         "globals": "^17.4.0",
+        "jsdom": "^29.0.2",
         "oxfmt": "^0.45.0",
         "oxlint": "^1.60.0",
         "oxlint-tsgolint": "^0.20.0",
         "typescript": "~6.0.2",
-        "vite": "^8.0.4"
+        "vite": "^8.0.4",
+        "vitest": "^4.1.4"
     },
     "pnpm": {
         "peerDependencyRules": {

@@ -45,3 +45,13 @@ logs:
 # Cleanup
 clean:
     docker-compose down -v --rmi local
+
+# Tests
+test:
+    pnpm test:watch
+
+test-run:
+    pnpm test:run
+
+test-ui:
+    pnpm test:ui
