@@ -99,4 +99,13 @@ export class LocalApiService extends ApiService<ApiSchema> {
         const token = `${user.id}-${user.username}-${Date.now() + life}`;
         return token;
     }
+
+    // Introduce artificial delay
+    protected async validateParams<K extends keyof ApiSchema>(
+        key: K,
+        params: ParamsInput<ApiSchema, K>,
+    ): Promise<ParamsInput<ApiSchema, K>> {
+        await promiseTimeout(500);
+        return super.validateParams(key, params);
+    }
 }
