@@ -1,7 +1,7 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it } from "vitest";
 
-import * as number from "./src/utils/number";
-import * as string from "./src/utils/string";
+import * as number from "../src/utils/number";
+import * as string from "../src/utils/string";
 
 describe("number utils", () => {
     describe("c2i", () => {

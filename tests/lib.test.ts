@@ -1,6 +1,7 @@
+// @oxlint-disable
 import { describe, expect, it } from "vitest";
 
-import { cn } from "./src/lib/utils";
+import { cn } from "../src/lib/utils";
 
 describe("lib utils", () => {
     describe("cn", () => {

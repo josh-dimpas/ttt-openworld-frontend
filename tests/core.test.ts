@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { EventEmitter } from "./src/core/EventEmitter";
-import { MapGen, Chunk } from "./src/core/MapGeneration";
+import { EventEmitter } from "../src/core/EventEmitter";
+import { Chunk, MapGen } from "../src/core/MapGeneration";
 
 describe("EventEmitter", () => {
     it("registers and emits events", () => {

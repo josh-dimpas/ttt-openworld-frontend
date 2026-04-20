@@ -1,6 +1,6 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { describe, expect, it } from "vitest";
 
-import { encodeGameConfig, decodeGameConfig, parseSearchParams } from "./src/utils/url";
+import { decodeGameConfig, encodeGameConfig, parseSearchParams } from "../src/utils/url";
 
 describe("url utils", () => {
     describe("encodeGameConfig", () => {

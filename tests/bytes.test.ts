@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BitArrayBuilder } from "./src/utils/bytes";
+import { BitArrayBuilder } from "../src/utils/bytes";
 
 describe("bytes utils", () => {
     describe("BitArrayBuilder", () => {
