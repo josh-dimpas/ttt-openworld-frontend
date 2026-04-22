@@ -47,7 +47,7 @@ function RouteComponent() {
     );
     const [multiplayer, setMultiplayer] = useSearchQuery<boolean>("multiplayer", false, true);
 
-    const createGameMutation = useMutation({
+    const { isPending: isLoading, mutate: onSubmit } = useMutation({
         mutationFn: async () => {
             const config = {
                 seed: mapSeed!,
@@ -170,12 +170,12 @@ function RouteComponent() {
 
                 <div>
                     <Button
-                        onClick={() => createGameMutation.mutate()}
-                        disabled={createGameMutation.isPending}
+                        onClick={() => onSubmit()}
+                        disabled={isLoading}
                         type="submit"
                         className="btn mt-4 w-full! text-xl tracking-wider uppercase"
                     >
-                        {createGameMutation.isPending ? "Creating..." : "Start"}
+                        {isLoading ? "Creating..." : "Start"}
                     </Button>
                 </div>
             </form>
