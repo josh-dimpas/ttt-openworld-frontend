@@ -45,23 +45,42 @@ export class LocalApiService extends ApiService<ApiSchema> {
                 return { success: true };
             },
 
-            create_game: (config): unknown | PromiseLike<unknown> => {
+create_game: (config): unknown | PromiseLike<unknown> => {
                 const id = this.getItem<number>(GAMES_LAST_INDEX, 0) + 1;
-
+                
+                // Initial reveal buffer: chunk (0,0) with 3x3 center revealed
+                // Each entry is [chunkCoord, cellMask] where:
+                //   chunkCoord = (x << 16) | y (two 16-bit signed integers)
+                //   cellMask = 25-bit mask for 5x5 cells (LSB first, row-major)
+                // For 3x3 at top-left: rows 0-2, cols 0-2 set
+                const initialRevealBuffer = [
+                    (0 << 16) | 0,  // chunk coordinate (0,0)
+                    0b0000011100111001110000000  // binary: 7,7,7,0,0 as rows = 7399 decimal
+                ];
+                
                 const game = {
                     id,
                     players: [
-                        { turn: 0, revealBuffer: [] },
-                        { turn: 1, revealBuffer: [] },
+                        { turn: 0, revealBuffer: initialRevealBuffer },
+                        { turn: 1, revealBuffer: initialRevealBuffer },
                     ],
                     config: {
-                        seed: config.seed,
+                        mapSeed: config.seed,
                         chunkSize: config.chunkSize,
                         winPointsThreshold: config.winPointsThreshold,
                         timeLimit: config.timeLimit,
-                        revealSize: config.revealSize,
+                        revealRadius: config.revealSize,
                         sharedFog: config.sharedFog,
                     },
+                    state: {
+                        pieceLayer: [],
+                        turn: 0,
+                    },
+                };
+                
+                this.additem(GAMES_KEY, game);
+                return game;
+            },
                     state: {
                         pieceLayer: [],
                         turn: 0,
