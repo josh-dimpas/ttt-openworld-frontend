@@ -1,18 +1,17 @@
-import type { GraphicsController } from "./GraphicsController";
+import { GraphicsControllerSubModule, type GraphicsController } from "./GraphicsController";
 
-export class GraphicStatController {
-    gc: GraphicsController;
+export class GraphicStatController extends GraphicsControllerSubModule {
     panel: HTMLDivElement;
 
     get x() {
-        return this.gc.camera.x;
+        return this.camera.x;
     }
     get y() {
-        return this.gc.camera.y;
+        return this.camera.y;
     }
 
     constructor(gc: GraphicsController) {
-        this.gc = gc;
+        super(gc);
         this.panel = document.createElement("div");
     }
 
@@ -31,7 +30,7 @@ export class GraphicStatController {
             "opacity-30",
             "hover:opacity-100",
         );
-        this.gc.on("frame", () => this.showStat());
+        this.gc.on("render", () => this.showStat());
 
         this.gc.parent.appendChild(this.panel);
 

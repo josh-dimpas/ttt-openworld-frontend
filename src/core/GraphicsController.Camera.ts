@@ -1,13 +1,12 @@
 // oxlint-disable typescript/unbound-method - Requires unbound methods
 
-import type { GraphicsController } from "./GraphicsController";
+import { GraphicsControllerSubModule, type GraphicsController } from "./GraphicsController";
 
-export class GraphicsCameraController {
+export class GraphicsCameraController extends GraphicsControllerSubModule {
     // @ts-expect-error Initialized on component mount
     viewport: HTMLDivElement;
-    gc: GraphicsController;
 
-    #bindedScrollEvent = this.onScroll.bind(this);
+    #scroll = this.onScroll.bind(this);
 
     #x = 0;
     #y = 0;
@@ -19,50 +18,81 @@ export class GraphicsCameraController {
         return this.#y;
     }
 
-    get parent() {
-        return this.gc.parent;
+    get px() {
+        return this.parent.scrollLeft;
+    }
+    get py() {
+        return this.parent.scrollTop;
+    }
+
+    get pw() {
+        return this.parent.clientWidth;
+    }
+
+    get ph() {
+        return this.parent.clientHeight;
+    }
+
+    get pmx() {
+        return this.spacer.clientWidth;
+    }
+
+    get pmy() {
+        return this.spacer.clientHeight;
     }
 
     set x(value: number) {
         this.#x = value;
-        if (this.#x != this.gc.px) this.parent.scrollBy({ left: value });
+        if (this.#x != this.px) this.parent.scrollBy({ left: value });
     }
 
     set y(value: number) {
         this.#y = value;
-        if (this.#y != this.gc.py) this.parent.scrollBy({ top: value });
+        if (this.#y != this.py) this.parent.scrollBy({ top: value });
     }
 
     get viewportSize(): [width: number, height: number] {
-        return [this.gc.pw, this.gc.ph];
+        return [this.pw, this.ph];
     }
 
     get viewportBounds(): [l: number, t: number, r: number, b: number] {
         // Offset the positions based on 'x' and 'y'
         // TODO: Perform calculation to get 'bounds' from revealed map data
 
-        return [this.x, this.y, this.x + this.gc.px, this.y + this.gc.py];
+        return [this.x, this.y, this.x + this.px, this.y + this.py];
     }
 
     constructor(gc: GraphicsController) {
-        this.gc = gc;
+        super(gc);
 
         // TODO: Get from the
     }
 
-    bindViewPort(el: HTMLDivElement) {
-        this.viewport = el;
-        el.addEventListener("scroll", this.#bindedScrollEvent);
+    setup() {
+        const { canvas, parent } = this;
+
+        this.viewport = parent;
+        parent.addEventListener("scroll", this.#scroll);
+
+        const handleResize = () => {
+            canvas.width = this.pw;
+            canvas.height = this.ph;
+        };
+        handleResize();
+
+        window.addEventListener("resize", handleResize);
+
+        this.gc.on("dismount", () => {
+            window.removeEventListener("resize", handleResize);
+        });
     }
 
     onScroll() {
-        if (!this.gc) return;
-
-        this.x = this.gc.px;
-        this.y = this.gc.py;
+        this.x = this.px;
+        this.y = this.py;
     }
 
     dismount() {
-        this.viewport.removeEventListener("scroll", this.#bindedScrollEvent);
+        this.viewport.removeEventListener("scroll", this.#scroll);
     }
 }

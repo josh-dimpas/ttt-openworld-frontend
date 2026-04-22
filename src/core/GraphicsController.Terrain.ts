@@ -2,12 +2,10 @@ import { gameStore } from "@/stores/game";
 import { m32 } from "@/utils/mullberry32";
 
 import { c2i, dot, fade, i2c, lerp } from "../utils/number";
-import type { GraphicsController } from "./GraphicsController";
+import { GraphicsControllerSubModule, type GraphicsController } from "./GraphicsController";
 
-export class GraphicsTerrainController {
-    gc: GraphicsController;
-
-    #bindedRenderEvent = this.render.bind(this);
+export class GraphicsTerrainController extends GraphicsControllerSubModule {
+    #render = this.render.bind(this);
 
     cellSize = 200;
     delta = 0;
@@ -35,23 +33,19 @@ export class GraphicsTerrainController {
     #terrainMapValue = Object.values(this.terrainMapping);
 
     get gridX() {
-        return ~~(this.gc.camera.x / this.cellSize);
+        return ~~(this.camera.x / this.cellSize);
     }
 
     get gridY() {
-        return ~~(this.gc.camera.y / this.cellSize);
+        return ~~(this.camera.y / this.cellSize);
     }
 
     get maxGridX() {
-        return ~~(this.gc.pmx / this.cellSize);
+        return ~~(this.camera.pmx / this.cellSize);
     }
 
     get maxGridY() {
-        return ~~(this.gc.pmy / this.cellSize);
-    }
-
-    get camera() {
-        return this.gc.camera;
+        return ~~(this.camera.pmy / this.cellSize);
     }
 
     get gridBounds(): [l: number, t: number, r: number, b: number] {
@@ -80,13 +74,13 @@ export class GraphicsTerrainController {
     }
 
     constructor(gc: GraphicsController) {
-        this.gc = gc;
+        super(gc);
         this.randomizer = m32(gameStore.game?.config.seed ?? "seed");
     }
 
     setup() {
         // Start listening for frame updates
-        this.gc.on("frame", this.#bindedRenderEvent);
+        this.gc.on("render", this.#render);
 
         this.map = Array((this.maxGridX + 2) ** 2)
             .fill(0)
@@ -99,8 +93,7 @@ export class GraphicsTerrainController {
     }
 
     render() {
-        const { cellSize } = this;
-        const ctx = this.gc.ctx;
+        const { cellSize, ctx } = this;
 
         const [pw, ph] = this.camera.viewportSize;
         const [l, t] = this.gridBounds;
@@ -156,7 +149,7 @@ export class GraphicsTerrainController {
         const cx = x + halfCellSize;
         const cy = y + halfCellSize;
 
-        const ctx = this.gc.ctx;
+        const ctx = this.ctx;
 
         const [vx, vy] = this.map[index];
 
@@ -173,7 +166,7 @@ export class GraphicsTerrainController {
         const cellArea = this.cellSize ** 2;
         const resolution = 1; // Smaller the better
 
-        const buffer = this.gc.ctx.createImageData(this.cellSize, this.cellSize);
+        const buffer = ctx.createImageData(this.cellSize, this.cellSize);
 
         for (let i = 0; i < cellArea; i += resolution) {
             const [px, py] = i2c(i, this.cellSize);
@@ -188,7 +181,7 @@ export class GraphicsTerrainController {
             buffer.data[bi + 3] = 255;
         }
 
-        this.gc.ctx.putImageData(buffer, x, y);
+        ctx.putImageData(buffer, x, y);
     }
 
     renderPerlinPixel(

@@ -1,12 +1,13 @@
 import { EventEmitter } from "./EventEmitter";
 import { GraphicsCameraController } from "./GraphicsController.Camera";
+import { GraphicsConfigController } from "./GraphicsController.Config";
 import { GraphicStatController } from "./GraphicsController.Stat";
 import { GraphicsTerrainController } from "./GraphicsController.Terrain";
 
 type GraphicsControllerEmits = {
     setup: [];
-    frame: [];
-    tick: [];
+    render: [];
+    beforeRender: [];
     dismount: [];
 };
 
@@ -17,7 +18,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
     ctx: CanvasRenderingContext2D;
 
     // @ts-expect-error initialized on component mount
-    #spacer: HTMLDivElement;
+    spacer: HTMLDivElement;
     // @ts-expect-error initialized on component mount
     parent: HTMLDivElement;
 
@@ -28,16 +29,10 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
     #running = false;
     #animationId: number | null = null;
 
-    #tick = () => {
-        this.#render();
-        this.#animationId = requestAnimationFrame(this.#tick);
-        this.emit("tick");
-    };
-
     start() {
         if (this.#running) return;
         this.#running = true;
-        this.#animationId = requestAnimationFrame(this.#tick);
+        this.#animationId = requestAnimationFrame(this.#render);
     }
 
     stop() {
@@ -51,35 +46,17 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
 
     #render() {
         if (!this.ready) return;
+
+        this.emit("beforeRender");
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.emit("frame");
+        this.#animationId = requestAnimationFrame(this.#render);
+
+        this.emit("render");
     }
 
     get running() {
         return this.#running;
-    }
-
-    get px() {
-        return this.parent.scrollLeft;
-    }
-    get py() {
-        return this.parent.scrollTop;
-    }
-
-    get pw() {
-        return this.parent.clientWidth;
-    }
-
-    get ph() {
-        return this.parent.clientHeight;
-    }
-
-    get pmx() {
-        return this.#spacer.clientWidth;
-    }
-
-    get pmy() {
-        return this.#spacer.clientHeight;
     }
 
     get ready() {
@@ -102,12 +79,12 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         spacer: HTMLDivElement;
         parent: HTMLDivElement;
     }) {
-        console.log("setup");
-
         this.#setParent(parent);
         this.#setCanvas(canvas);
         this.#setSpacer(spacer);
 
+        this.camera.setup();
+        this.config.setup();
         this.stat.setup();
         this.terrain.setup();
 
@@ -115,28 +92,15 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
     }
 
     #setSpacer(el: HTMLDivElement) {
-        this.#spacer = el;
+        this.spacer = el;
     }
 
     #setParent(el: HTMLDivElement) {
         this.parent = el;
-        this.camera.bindViewPort(el);
     }
 
     #setCanvas(c: HTMLCanvasElement) {
         this.canvas = c;
-
-        const handleResize = () => {
-            c.width = this.pw;
-            c.height = this.ph;
-        };
-        handleResize();
-
-        window.addEventListener("resize", handleResize);
-
-        this.on("dismount", () => {
-            window.removeEventListener("resize", handleResize);
-        });
 
         const ctx = c.getContext("2d");
         if (ctx) this.ctx = ctx;
@@ -148,9 +112,50 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         // Dismount sub-modules
         this.stat.dismount();
         this.camera.dismount();
+        this.config.dismount();
 
         this.emit("dismount");
 
         this.removeAllListeners();
+    }
+}
+
+export abstract class GraphicsControllerSubModule {
+    gc: GraphicsController;
+
+    get parent() {
+        return this.gc.parent;
+    }
+
+    get spacer() {
+        return this.gc.spacer;
+    }
+
+    get canvas() {
+        return this.gc.canvas;
+    }
+
+    get ctx() {
+        return this.gc.ctx;
+    }
+
+    get camera() {
+        return this.gc.camera;
+    }
+
+    get terrain() {
+        return this.gc.terrain;
+    }
+
+    get config() {
+        return this.gc.config;
+    }
+
+    get state() {
+        return this.gc.stat;
+    }
+
+    constructor(gc: GraphicsController) {
+        this.gc = gc;
     }
 }
