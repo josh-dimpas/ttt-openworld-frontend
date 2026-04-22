@@ -53,7 +53,7 @@ function GamePage() {
     // set store to use game
     useEffect(() => {
         gameStore.game = game;
-    });
+    }, [game]);
 
     return (
         <div className="relative">
