@@ -25,6 +25,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
     stat: GraphicStatController;
     camera: GraphicsCameraController;
     terrain: GraphicsTerrainController;
+    config: GraphicsConfigController;
 
     #running = false;
     #animationId: number | null = null;
@@ -68,6 +69,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         this.stat = new GraphicStatController(this);
         this.camera = new GraphicsCameraController(this);
         this.terrain = new GraphicsTerrainController(this);
+        this.config = new GraphicsConfigController(this);
     }
 
     setup({
