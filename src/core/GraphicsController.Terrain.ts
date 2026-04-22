@@ -1,3 +1,6 @@
+import { gameStore } from "@/stores/game";
+import { m32 } from "@/utils/mullberry32";
+
 import { c2i, dot, fade, i2c, lerp } from "../utils/number";
 import type { GraphicsController } from "./GraphicsController";
 
@@ -13,6 +16,7 @@ export class GraphicsTerrainController {
 
     alphaMapCache: Map<string, number> = new Map();
     imageMapCache: Map<number, ImageData> = new Map();
+    randomizer = () => Math.random();
 
     terrainMapping: Record<number, [number, number, number]> = {
         50: [8, 51, 120], // Deep Ocean
@@ -77,6 +81,7 @@ export class GraphicsTerrainController {
 
     constructor(gc: GraphicsController) {
         this.gc = gc;
+        this.randomizer = m32(gameStore.game?.config.seed ?? "seed");
     }
 
     setup() {
@@ -86,7 +91,7 @@ export class GraphicsTerrainController {
         this.map = Array((this.maxGridX + 2) ** 2)
             .fill(0)
             .map((_) => {
-                const r = Math.random() * 2 * Math.PI;
+                const r = this.randomizer() * 2 * Math.PI;
                 return [Math.cos(r), Math.sin(r)];
             });
 
@@ -140,23 +145,6 @@ export class GraphicsTerrainController {
     }
 
     renderGrid(x: number, y: number, index: number) {
-        // const halfCellSize = this.cellSize / 2;
-
-        // // Get coordinates from 'x' and 'y'
-        // const cx = x + halfCellSize;
-        // const cy = y + halfCellSize;
-
-        // const ctx = this.gc.ctx;
-
-        // const [vx, vy] = this.map[index];
-
-        // ctx.textAlign = "center";
-        // ctx.strokeText(`${index}`, cx, cy);
-
-        // ctx.moveTo(x, y);
-        // ctx.lineTo(x + vx * halfCellSize, y + vy * halfCellSize);
-        // ctx.stroke();
-
         this.renderPerlin(x, y, index);
     }
 
