@@ -31,7 +31,11 @@ export abstract class GraphicsControllerSubModule {
         return this.gc.config;
     }
 
-    get state() {
+    get input() {
+        return this.gc.input;
+    }
+
+    get stat() {
         return this.gc.stat;
     }
 
