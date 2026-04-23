@@ -1,9 +1,9 @@
 import { gameStore } from "@/stores/game";
 import { m32 } from "@/utils/mullberry32";
 
-import { c2i, dot, fade, i2c, lerp } from "../utils/number";
-import { type GraphicsController } from "./GraphicsController";
-import { GraphicsControllerSubModule } from "./GraphicsController.Submodule";
+import { c2i, dot, fade, i2c, lerp } from "../../utils/number";
+import { type GraphicsController } from "./main";
+import { GraphicsControllerSubModule } from "./submodule";
 
 export class GraphicsTerrainController extends GraphicsControllerSubModule {
     #render = this.render.bind(this);

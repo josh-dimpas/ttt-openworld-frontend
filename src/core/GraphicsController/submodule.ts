@@ -1,4 +1,4 @@
-import type { GraphicsController } from "./GraphicsController";
+import type { GraphicsController } from "./main";
 
 export abstract class GraphicsControllerSubModule {
     gc: GraphicsController;

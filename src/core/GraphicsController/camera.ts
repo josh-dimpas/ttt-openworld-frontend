@@ -1,5 +1,5 @@
-import { GraphicsController } from "./GraphicsController";
-import { GraphicsControllerSubModule } from "./GraphicsController.Submodule";
+import { GraphicsController } from "./main";
+import { GraphicsControllerSubModule } from "./submodule";
 
 export class GraphicsCameraController extends GraphicsControllerSubModule {
     // @ts-expect-error Initialized on component mount

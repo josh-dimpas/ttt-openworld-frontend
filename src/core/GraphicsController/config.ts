@@ -3,8 +3,8 @@ import { subscribeKey } from "valtio/utils";
 import { type GameSchema } from "@/schemas/game";
 import { gameStore } from "@/stores/game";
 
-import { type GraphicsController } from "./GraphicsController";
-import { GraphicsControllerSubModule } from "./GraphicsController.Submodule";
+import { type GraphicsController } from "./main";
+import { GraphicsControllerSubModule } from "./submodule";
 
 // Handles syncing of the current game state and config by managing the Valtio observable
 export class GraphicsConfigController extends GraphicsControllerSubModule {
@@ -12,6 +12,10 @@ export class GraphicsConfigController extends GraphicsControllerSubModule {
     game: GameSchema;
     // @ts-expect-error Initialized on component mount
     #stop: Function;
+
+    get revealBuffer() {
+        return this.game.players[0].revealBuffer;
+    }
 
     constructor(gc: GraphicsController) {
         super(gc);

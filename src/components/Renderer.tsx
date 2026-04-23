@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import type { GraphicsController } from "../core/GraphicsController";
+import type { GraphicsController } from "../core/GraphicsController/main";
 
 type RendererProps = {
     controller: GraphicsController;
@@ -13,6 +13,7 @@ export function Renderer({ controller, className, ...props }: RendererProps) {
     const spacerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        console.log("SETTING IT UP");
         if (containerRef.current && canvasRef.current && spacerRef.current) {
             controller.setup({
                 parent: containerRef.current,
@@ -20,11 +21,13 @@ export function Renderer({ controller, className, ...props }: RendererProps) {
                 spacer: spacerRef.current,
             });
 
+            console.log("STARTING");
+
             controller.start();
         }
 
         return () => {
-            console.log("dismount");
+            console.log("DISMOUNTED");
             return controller.dismount();
         };
     }, [controller]);

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { gameStore } from "@/stores/game";
 
 import { Renderer } from "../components/Renderer";
-import { GraphicsController } from "../core/GraphicsController";
+import { GraphicsController } from "../core/GraphicsController/main";
 import { LocalApiService } from "../services/ApiService.Local";
 
 const api = new LocalApiService();

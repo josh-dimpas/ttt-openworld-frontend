@@ -1,9 +1,9 @@
-import { EventEmitter } from "./EventEmitter";
-import { GraphicsCameraController } from "./GraphicsController.Camera";
-import { GraphicsConfigController } from "./GraphicsController.Config";
-import { GraphicsInputController } from "./GraphicsController.Input";
-import { GraphicStatController } from "./GraphicsController.Stat";
-import { GraphicsTerrainController } from "./GraphicsController.Terrain";
+import { EventEmitter } from "../EventEmitter";
+import { GraphicsCameraController } from "./camera";
+import { GraphicsConfigController } from "./config";
+import { GraphicsInputController } from "./input";
+import { GraphicStatController } from "./stat";
+import { GraphicsTerrainController } from "./terrain";
 
 type GraphicsControllerEmits = {
     setup: [];
