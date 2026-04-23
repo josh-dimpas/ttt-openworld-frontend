@@ -1,4 +1,5 @@
-import { GraphicsControllerSubModule, type GraphicsController } from "./GraphicsController";
+import { type GraphicsController } from "./GraphicsController";
+import { GraphicsControllerSubModule } from "./GraphicsController.Submodule";
 
 export class GraphicStatController extends GraphicsControllerSubModule {
     panel: HTMLDivElement;

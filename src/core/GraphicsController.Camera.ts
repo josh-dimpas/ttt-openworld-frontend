@@ -1,6 +1,5 @@
-// oxlint-disable typescript/unbound-method - Requires unbound methods
-
-import { GraphicsControllerSubModule, type GraphicsController } from "./GraphicsController";
+import { GraphicsController } from "./GraphicsController";
+import { GraphicsControllerSubModule } from "./GraphicsController.Submodule";
 
 export class GraphicsCameraController extends GraphicsControllerSubModule {
     // @ts-expect-error Initialized on component mount

@@ -3,7 +3,8 @@ import { subscribeKey } from "valtio/utils";
 import { type GameSchema } from "@/schemas/game";
 import { gameStore } from "@/stores/game";
 
-import { GraphicsControllerSubModule, type GraphicsController } from "./GraphicsController";
+import { type GraphicsController } from "./GraphicsController";
+import { GraphicsControllerSubModule } from "./GraphicsController.Submodule";
 
 // Handles syncing of the current game state and config by managing the Valtio observable
 export class GraphicsConfigController extends GraphicsControllerSubModule {

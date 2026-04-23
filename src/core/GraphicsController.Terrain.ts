@@ -2,7 +2,8 @@ import { gameStore } from "@/stores/game";
 import { m32 } from "@/utils/mullberry32";
 
 import { c2i, dot, fade, i2c, lerp } from "../utils/number";
-import { GraphicsControllerSubModule, type GraphicsController } from "./GraphicsController";
+import { type GraphicsController } from "./GraphicsController";
+import { GraphicsControllerSubModule } from "./GraphicsController.Submodule";
 
 export class GraphicsTerrainController extends GraphicsControllerSubModule {
     #render = this.render.bind(this);
@@ -88,8 +89,6 @@ export class GraphicsTerrainController extends GraphicsControllerSubModule {
                 const r = this.randomizer() * 2 * Math.PI;
                 return [Math.cos(r), Math.sin(r)];
             });
-
-        console.log(this.map.length);
     }
 
     render() {
