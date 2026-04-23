@@ -29,11 +29,20 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
 
     #running = false;
     #animationId: number | null = null;
+    #_render = this.#render.bind(this);
+
+    get running() {
+        return this.#running;
+    }
+
+    get ready() {
+        return this.canvas != null && this.ctx != null;
+    }
 
     start() {
         if (this.#running) return;
         this.#running = true;
-        this.#animationId = requestAnimationFrame(this.#render);
+        this.#animationId = requestAnimationFrame(this.#_render);
     }
 
     stop() {
@@ -51,17 +60,9 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         this.emit("beforeRender");
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.#animationId = requestAnimationFrame(this.#render);
+        this.#animationId = requestAnimationFrame(this.#_render);
 
         this.emit("render");
-    }
-
-    get running() {
-        return this.#running;
-    }
-
-    get ready() {
-        return this.canvas != null && this.ctx != null;
     }
 
     constructor() {
@@ -106,6 +107,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
 
         const ctx = c.getContext("2d");
         if (ctx) this.ctx = ctx;
+        else throw new Error("Failed to acquire canvas context");
     }
 
     dismount() {
@@ -119,45 +121,5 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         this.emit("dismount");
 
         this.removeAllListeners();
-    }
-}
-
-export abstract class GraphicsControllerSubModule {
-    gc: GraphicsController;
-
-    get parent() {
-        return this.gc.parent;
-    }
-
-    get spacer() {
-        return this.gc.spacer;
-    }
-
-    get canvas() {
-        return this.gc.canvas;
-    }
-
-    get ctx() {
-        return this.gc.ctx;
-    }
-
-    get camera() {
-        return this.gc.camera;
-    }
-
-    get terrain() {
-        return this.gc.terrain;
-    }
-
-    get config() {
-        return this.gc.config;
-    }
-
-    get state() {
-        return this.gc.stat;
-    }
-
-    constructor(gc: GraphicsController) {
-        this.gc = gc;
     }
 }
