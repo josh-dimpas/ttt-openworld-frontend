@@ -1,6 +1,7 @@
 import { EventEmitter } from "./EventEmitter";
 import { GraphicsCameraController } from "./GraphicsController.Camera";
 import { GraphicsConfigController } from "./GraphicsController.Config";
+import { GraphicsInputController } from "./GraphicsController.Input";
 import { GraphicStatController } from "./GraphicsController.Stat";
 import { GraphicsTerrainController } from "./GraphicsController.Terrain";
 
@@ -9,6 +10,11 @@ type GraphicsControllerEmits = {
     render: [];
     beforeRender: [];
     dismount: [];
+
+    resize: [];
+    scroll: [x: number, y: number];
+    mousemove: [x: number, y: number];
+    mouseclick: [x: number, y: number];
 };
 
 export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
@@ -26,6 +32,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
     camera: GraphicsCameraController;
     terrain: GraphicsTerrainController;
     config: GraphicsConfigController;
+    input: GraphicsInputController;
 
     #running = false;
     #animationId: number | null = null;
@@ -71,6 +78,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         this.camera = new GraphicsCameraController(this);
         this.terrain = new GraphicsTerrainController(this);
         this.config = new GraphicsConfigController(this);
+        this.input = new GraphicsInputController(this);
     }
 
     setup({
@@ -90,6 +98,7 @@ export class GraphicsController extends EventEmitter<GraphicsControllerEmits> {
         this.config.setup();
         this.stat.setup();
         this.terrain.setup();
+        this.input.setup();
 
         this.emit("setup");
     }

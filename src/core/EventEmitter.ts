@@ -45,7 +45,6 @@ export class EventEmitter<T extends Record<string, unknown[]> = Record<string, u
     }
 
     emit<K extends keyof T>(event: K, ...args: T[K]): void;
-    emit(event: string, ...args: unknown[]): void;
     emit(event: keyof T | string, ...args: unknown[]): void {
         const callbacks = this._events.get(event as string);
         if (!callbacks) return;

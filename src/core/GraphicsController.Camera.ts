@@ -5,8 +5,6 @@ export class GraphicsCameraController extends GraphicsControllerSubModule {
     // @ts-expect-error Initialized on component mount
     viewport: HTMLDivElement;
 
-    #scroll = this.onScroll.bind(this);
-
     #x = 0;
     #y = 0;
 
@@ -68,22 +66,19 @@ export class GraphicsCameraController extends GraphicsControllerSubModule {
     }
 
     setup() {
-        const { canvas, parent } = this;
-
+        const { parent } = this;
         this.viewport = parent;
-        parent.addEventListener("scroll", this.#scroll);
 
-        const handleResize = () => {
-            canvas.width = this.pw;
-            canvas.height = this.ph;
-        };
-        handleResize();
+        this.handleResize();
 
-        window.addEventListener("resize", handleResize);
+        this.gc.on("resize", this.handleResize);
+        this.gc.on("scroll", this.onScroll);
+    }
 
-        this.gc.on("dismount", () => {
-            window.removeEventListener("resize", handleResize);
-        });
+    handleResize() {
+        const canvas = this.canvas;
+        canvas.width = this.pw;
+        canvas.height = this.ph;
     }
 
     onScroll() {
@@ -91,7 +86,5 @@ export class GraphicsCameraController extends GraphicsControllerSubModule {
         this.y = this.py;
     }
 
-    dismount() {
-        this.viewport.removeEventListener("scroll", this.#scroll);
-    }
+    dismount() {}
 }
