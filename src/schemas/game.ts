@@ -39,7 +39,7 @@ export const gamePlayerSchema = object({
 export const gameSchema = object({
     id: number().required().positive(),
 
-    players: tuple([gamePlayerSchema, gamePlayerSchema]),
+    players: tuple([gamePlayerSchema, gamePlayerSchema]).required(),
     config: gameConfigSchema,
     state: gameStateSchema,
 });
