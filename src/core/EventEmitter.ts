@@ -7,9 +7,11 @@ export class EventEmitter<T extends Record<string, unknown[]> = Record<string, u
     on<K extends keyof T>(event: K, callback: EventCallback<T[K]>): void;
     on(event: string, callback: EventCallback): void;
     on(event: keyof T | string, callback: EventCallback): number {
-        const callbacks = this._events.get(event as string) || new Map();
+        const callbacks = this._events.get(event as string) ?? new Map();
 
-        const id = Object.keys(callbacks).length;
+        const id = [...callbacks.keys()].length;
+        console.log(`REGISTERING EVENT: ${String(event)}[${id}] | ${String(callback)}`);
+
         callbacks.set(id, callback);
         this._events.set(event as string, callbacks);
         return id;
