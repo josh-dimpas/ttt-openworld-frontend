@@ -6,22 +6,22 @@ import { GraphicsControllerSubModule } from "./submodule";
 export class GraphicsInputController extends GraphicsControllerSubModule {
     #abortController = new AbortController();
 
-    pos = proxy({ x: 0, y: 0 });
+    mouse = proxy({ x: 0, y: 0 });
 
     get mx() {
-        return this.pos.x;
+        return this.mouse.x;
     }
 
     get my() {
-        return this.pos.y;
+        return this.mouse.y;
     }
 
     set mx(v: number) {
-        this.pos.x = v;
+        this.mouse.x = v;
     }
 
     set my(v: number) {
-        this.pos.y = v;
+        this.mouse.y = v;
     }
 
     constructor(gc: GraphicsController) {
@@ -40,7 +40,7 @@ export class GraphicsInputController extends GraphicsControllerSubModule {
     }
 
     onScroll() {
-        this.gc.emit("scroll", this.camera.px, this.camera.py);
+        this.gc.emit("scroll", this.camera.psx, this.camera.psy);
     }
 
     onWindowResize() {

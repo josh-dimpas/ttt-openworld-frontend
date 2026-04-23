@@ -8,10 +8,10 @@ export class GraphicStatController extends GraphicsControllerSubModule {
     #showStat = this.showStat.bind(this);
 
     get x() {
-        return this.camera.x;
+        return this.camera.sx;
     }
     get y() {
-        return this.camera.y;
+        return this.camera.sy;
     }
 
     constructor(gc: GraphicsController) {

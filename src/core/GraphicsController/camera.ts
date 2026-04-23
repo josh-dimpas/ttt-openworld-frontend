@@ -1,3 +1,7 @@
+import { proxy } from "valtio";
+
+import type { GameSchema } from "@/schemas/game";
+
 import { GraphicsController } from "./main";
 import { GraphicsControllerSubModule } from "./submodule";
 
@@ -5,22 +9,47 @@ export class GraphicsCameraController extends GraphicsControllerSubModule {
     // @ts-expect-error Initialized on component mount
     viewport: HTMLDivElement;
 
-    #x = 0;
-    #y = 0;
+    scroll = proxy({ x: 0, y: 0 });
+    center = proxy({ x: 0, y: 0 });
 
-    get x() {
-        return this.#x;
-    }
-    get y() {
-        return this.#y;
+    /*
+        Scroll Values
+        sx, sy = Virtual Scroll X, Y (Internal Copy)
+        psx, psy = Actual Scroll X, Y (Dom Value)
+
+        Both needs to be separate data in the memory
+        in order to have two-way control 
+            - actual set virtual for camera (viewport)
+            - virtual set actual for non-player scrolls (transitions)
+    */
+
+    get sx() {
+        return this.scroll.x;
     }
 
-    get px() {
+    get sy() {
+        return this.scroll.y;
+    }
+
+    set sx(value: number) {
+        this.scroll.x = value;
+
+        if (this.sx != this.psx) this.parent.scrollBy({ left: value });
+    }
+
+    set sy(value: number) {
+        this.scroll.y = value;
+        if (this.sy != this.psy) this.parent.scrollBy({ top: value });
+    }
+
+    get psx() {
         return this.parent.scrollLeft;
     }
-    get py() {
+    get psy() {
         return this.parent.scrollTop;
     }
+
+    // Parent Dimensions
 
     get pw() {
         return this.parent.clientWidth;
@@ -30,6 +59,7 @@ export class GraphicsCameraController extends GraphicsControllerSubModule {
         return this.parent.clientHeight;
     }
 
+    // Spacer Dimensions (Parent-max-x/y scroll values)
     get pmx() {
         return this.spacer.clientWidth;
     }
@@ -38,14 +68,21 @@ export class GraphicsCameraController extends GraphicsControllerSubModule {
         return this.spacer.clientHeight;
     }
 
-    set x(value: number) {
-        this.#x = value;
-        if (this.#x != this.px) this.parent.scrollBy({ left: value });
+    // Map Bounds (grid)
+    get mgx() {}
+
+    // Center Camera (Controls relativity and maintains view when spacer expands)
+    get cx() {
+        return this.center.x;
     }
 
-    set y(value: number) {
-        this.#y = value;
-        if (this.#y != this.py) this.parent.scrollBy({ top: value });
+    get cy() {
+        return this.center.y;
+    }
+
+    set cx(value: number) {
+        this.center.x = value;
+        // if(this.sx != this.cx) this.sx =
     }
 
     get viewportSize(): [width: number, height: number] {
@@ -56,7 +93,7 @@ export class GraphicsCameraController extends GraphicsControllerSubModule {
         // Offset the positions based on 'x' and 'y'
         // TODO: Perform calculation to get 'bounds' from revealed map data
 
-        return [this.x, this.y, this.x + this.px, this.y + this.py];
+        return [this.sx, this.sy, this.sx + this.pw, this.sy + this.ph];
     }
 
     constructor(gc: GraphicsController) {
@@ -77,14 +114,23 @@ export class GraphicsCameraController extends GraphicsControllerSubModule {
 
     handleResize() {
         const canvas = this.canvas;
+
         canvas.width = this.pw;
         canvas.height = this.ph;
     }
 
     onScroll() {
-        this.x = this.px;
-        this.y = this.py;
+        this.sx = this.psx;
+        this.sy = this.psy;
     }
 
     dismount() {}
+}
+
+class RevealBufferManager {
+    game: GameSchema;
+
+    constructor(game: GameSchema) {
+        this.game = game;
+    }
 }

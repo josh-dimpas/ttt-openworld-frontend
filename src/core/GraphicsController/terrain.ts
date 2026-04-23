@@ -34,11 +34,11 @@ export class GraphicsTerrainController extends GraphicsControllerSubModule {
     #terrainMapValue = Object.values(this.terrainMapping);
 
     get gridX() {
-        return ~~(this.camera.x / this.cellSize);
+        return ~~(this.camera.sx / this.cellSize);
     }
 
     get gridY() {
-        return ~~(this.camera.y / this.cellSize);
+        return ~~(this.camera.sy / this.cellSize);
     }
 
     get maxGridX() {

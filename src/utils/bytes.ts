@@ -1,5 +1,6 @@
 export class NibbleArray {
     data: Uint32Array;
+    length = 0;
     #cursor: number = 0;
 
     #schema: number[] = [];
@@ -38,9 +39,14 @@ export class NibbleArray {
         });
     }
 
-    constructor(initial: Uint32Array = new Uint32Array()) {
-        this.data = initial;
+    constructor(initial: Uint32Array | number[] = new Uint32Array()) {
+        this.length = initial.length;
+        this.data = new Uint32Array(initial);
         this.cursor = 0;
+    }
+
+    push(...data: number[]) {
+        const length = this.data.length;
     }
 
     scheme(...lengths: number[]) {
