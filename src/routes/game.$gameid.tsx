@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { gameStore } from "@/stores/game";
@@ -17,6 +16,9 @@ export const Route = createFileRoute("/game/$gameid")({
         if (!game) {
             throw new Error("Game not found");
         }
+
+        gameStore.game = game;
+
         return game;
     },
     component: GamePage,
@@ -45,15 +47,7 @@ function ErrorComponent({ error }: { error: Error }) {
 
 function GamePage() {
     const { gameid } = Route.useParams();
-
-    const game = Route.useLoaderData();
-
     const controller = new GraphicsController();
-
-    // set store to use game
-    useEffect(() => {
-        gameStore.game = game;
-    }, [game]);
 
     return (
         <div className="relative">
