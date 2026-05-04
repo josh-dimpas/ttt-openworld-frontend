@@ -6,7 +6,6 @@
 // For the later "actual" backend to be used
 
 import { apiSchema, type ApiSchema } from "@/schemas/api";
-import { PieceType, type GameSchema } from "@/schemas/game";
 import type { User } from "@/schemas/user";
 import { promiseTimeout } from "@/utils/promise";
 
@@ -45,50 +44,50 @@ export class LocalApiService extends ApiService<ApiSchema> {
                 return { success: true };
             },
 
-            create_game: (config) => {
-                const id = this.getItem<number>(GAMES_LAST_INDEX, 0) + 1;
+            // create_game: (config) => {
+            //     const id = this.getItem<number>(GAMES_LAST_INDEX, 0) + 1;
 
-                // Initial reveal buffer: chunk (0,0) with 3x3 center revealed
-                // Each entry is [chunkCoord, cellMask] where:
-                //   chunkCoord = (x << 16) | y (two 16-bit signed integers)
-                //   cellMask = 25-bit mask for 5x5 cells (LSB first, row-major)
-                // For 3x3 at top-left: rows 0-2, cols 0-2 set
-                const initialRevealBuffer = [
-                    0, // chunk coordinate (0,0)
-                    0b11100_11100_11100_00000_00000_0000000, // binary: 7,7,7,0,0 as rows = 7399 decimal
-                ];
+            //     // Initial reveal buffer: chunk (0,0) with 3x3 center revealed
+            //     // Each entry is [chunkCoord, cellMask] where:
+            //     //   chunkCoord = (x << 16) | y (two 16-bit signed integers)
+            //     //   cellMask = 25-bit mask for 5x5 cells (LSB first, row-major)
+            //     // For 3x3 at top-left: rows 0-2, cols 0-2 set
+            //     const initialRevealBuffer = [
+            //         0, // chunk coordinate (0,0)
+            //         0b11100_11100_11100_00000_00000_0000000, // binary: 7,7,7,0,0 as rows = 7399 decimal
+            //     ];
 
-                const game = {
-                    id,
-                    players: [
-                        { turn: PieceType.O, revealBuffer: initialRevealBuffer },
-                        { turn: PieceType.X, revealBuffer: initialRevealBuffer },
-                    ],
-                    config: {
-                        seed: config.seed,
-                        chunkSize: config.chunkSize,
-                        winPointsThreshold: config.winPointsThreshold,
-                        timeLimit: config.timeLimit,
-                        sharedFog: config.sharedFog,
-                        revealSize: config.revealSize,
-                    },
-                    state: {
-                        pieceLayer: [],
-                        turn: 0,
-                    },
-                } as GameSchema;
+            //     const game = {
+            //         id,
+            //         players: [
+            //             { turn: PieceType.O, revealBuffer: initialRevealBuffer },
+            //             { turn: PieceType.X, revealBuffer: initialRevealBuffer },
+            //         ],
+            //         config: {
+            //             seed: config.seed,
+            //             chunkSize: config.chunkSize,
+            //             winPointsThreshold: config.winPointsThreshold,
+            //             timeLimit: config.timeLimit,
+            //             sharedFog: config.sharedFog,
+            //             revealSize: config.revealSize,
+            //         },
+            //         state: {
+            //             pieceLayer: [],
+            //             turn: 0,
+            //         },
+            //     } as GameSchema;
 
-                this.additem(GAMES_KEY, game);
-                return game;
-            },
+            //     this.additem(GAMES_KEY, game);
+            //     return game;
+            // },
 
-            get_game: ({ id }) => {
-                const data = this.getItem<GameSchema[]>(GAMES_KEY, [])
-                    .filter((g) => g.id === id)
-                    .at(0);
-                if (!data) throw new Error("Game not found");
-                return data;
-            },
+            // get_game: ({ id }) => {
+            //     const data = this.getItem<GameSchema[]>(GAMES_KEY, [])
+            //         .filter((g) => g.id === id)
+            //         .at(0);
+            //     if (!data) throw new Error("Game not found");
+            //     return data;
+            // },
         });
     }
 
