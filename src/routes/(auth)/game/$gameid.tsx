@@ -3,13 +3,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { gameStore } from "@/stores/game";
 
-import { Renderer } from "../components/Renderer";
-import { GraphicsController } from "../core/GraphicsController/main";
-import { LocalApiService } from "../services/ApiService.Local";
+import { Renderer } from "../../../components/Renderer";
+import { GraphicsController } from "../../../core/GraphicsController/main";
+import { LocalApiService } from "../../../services/ApiService.Local";
 
 const api = new LocalApiService();
 
-export const Route = createFileRoute("/game/$gameid")({
+export const Route = createFileRoute("/(auth)/game/$gameid")({
     loader: async ({ params }) => {
         const gameId = Number(params.gameid);
         const game = await api.fetch("get_game", { id: gameId });
