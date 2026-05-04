@@ -22,6 +22,6 @@
         "hooks": "@/hooks"
     },
     "registries": {
-        "@boldkit": "https://boldkit.dev/r/{name}.json"
+        "@boldkit": "https://boldkit.dev/r"
     }
 }

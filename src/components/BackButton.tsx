@@ -7,7 +7,7 @@ type BackButtonProps = {} & React.ComponentProps<"a">;
 
 export function BackButton({ ...props }: BackButtonProps) {
     return (
-        <Button asChild className="text-primary-foreground mb-6 w-fit px-0" variant="link">
+        <Button asChild className="text-primary-foreground w-fit px-0" variant="link">
             <Link to="/" {...props}>
                 <CaretLeftIcon /> Back
             </Link>
