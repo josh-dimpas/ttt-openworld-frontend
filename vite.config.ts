@@ -2,24 +2,31 @@ import path from "path";
 
 import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
         tailwindcss(),
-        tanstackRouter({
-            target: "react",
-            autoCodeSplitting: true,
+        tanstackStart({
+            router: {
+                entry: "./router.tsx",
+            },
         }),
         react(),
         babel({ presets: [reactCompilerPreset()] }),
+        nitro(),
     ],
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src"),
         },
+    },
+    ssr: {
+        noExternal: ["@tanstack/react-start"],
+        external: ["js-cookie"],
     },
 });

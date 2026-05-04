@@ -1,15 +1,20 @@
-import { createRouter } from "@tanstack/react-router";
+import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 
 import { routeTree } from "./routeTree.gen";
 
-// Setup router instance
-export const router = createRouter({
-    routeTree,
-    defaultPreload: "intent",
-    scrollRestoration: true,
-});
+// Factory function for SSR - called per request on server
+export function getRouter() {
+    return createTanStackRouter({
+        routeTree,
+        defaultPreload: "intent",
+        scrollRestoration: true,
+    });
+}
 
-//  Register things for typesafety
+// Export default router instance for client-side
+export const router = getRouter();
+
+// Register things for typesafety
 declare module "@tanstack/react-router" {
     interface Register {
         router: typeof router;
