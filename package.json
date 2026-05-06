@@ -1,79 +1,70 @@
 {
-    "name": "ttt-openworld-frontend",
-    "version": "0.0.0",
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "dev": "vite dev",
-        "build": "tsc -b && vite build",
-        "start": "node .output/server/index.mjs",
-        "lint": "oxlint",
-        "lint:fix": "oxlint --fix",
-        "preview": "vite preview",
-        "format": "npx oxfmt --write .",
-        "test": "vitest",
-        "test:ui": "vitest --ui",
-        "test:run": "vitest run",
-        "test:watch": "vitest"
-    },
-    "dependencies": {
-        "@base-ui/react": "^1.4.0",
-        "@fontsource-variable/jetbrains-mono": "^5.2.8",
-        "@phosphor-icons/react": "^2.1.10",
-        "@radix-ui/react-avatar": "^1.1.11",
-        "@radix-ui/react-checkbox": "^1.3.3",
-        "@radix-ui/react-label": "^2.1.8",
-        "@radix-ui/react-slot": "^1.2.4",
-        "@radix-ui/react-tooltip": "^1.2.8",
-        "@reactuses/core": "^6.3.1",
-        "@tailwindcss/vite": "^4.2.2",
-        "@tanstack/react-query": "^5.99.2",
-        "@tanstack/react-router": "^1.168.21",
-        "@tanstack/react-router-devtools": "^1.166.13",
-        "@tanstack/react-start": "^1.167.62",
-        "class-variance-authority": "^0.7.1",
-        "clsx": "^2.1.1",
-        "js-cookie": "^3.0.5",
-        "lucide-react": "^1.8.0",
-        "nitro": "3.0.260429-beta",
-        "react": "^19.2.4",
-        "react-dom": "^19.2.4",
-        "shadcn": "^4.3.0",
-        "tailwind-merge": "^3.5.0",
-        "tailwindcss": "^4.2.2",
-        "tw-animate-css": "^1.4.0",
-        "valtio": "^2.3.1",
-        "yup": "^1.7.1"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.29.0",
-        "@rolldown/plugin-babel": "^0.2.2",
-        "@tanstack/eslint-plugin-query": "^5.99.0",
-        "@tanstack/eslint-plugin-router": "^1.161.6",
-        "@tanstack/router-plugin": "^1.167.22",
-        "@types/babel__core": "^7.20.5",
-        "@types/js-cookie": "^3.0.6",
-        "@types/node": "^24.12.2",
-        "@types/react": "^19.2.14",
-        "@types/react-dom": "^19.2.3",
-        "@vitejs/plugin-react": "^6.0.1",
-        "@vitest/ui": "^4.1.4",
-        "babel-plugin-react-compiler": "^1.0.0",
-        "eslint-plugin-react-hooks": "^7.0.1",
-        "globals": "^17.4.0",
-        "jsdom": "^29.0.2",
-        "oxfmt": "^0.45.0",
-        "oxlint": "^1.60.0",
-        "oxlint-tsgolint": "^0.20.0",
-        "typescript": "~6.0.2",
-        "vite": "^8.0.4",
-        "vitest": "^4.1.4"
-    },
-    "pnpm": {
-        "peerDependencyRules": {
-            "ignoreMissing": [
-                "eslint"
-            ]
-        }
-    }
+  "name": "frontend",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "lint": "eslint",
+    "format": "prettier --write . && eslint --fix",
+    "check": "prettier --check ."
+  },
+  "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@phosphor-icons/react": "^2.1.10",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@radix-ui/react-toggle": "^1.1.10",
+    "@t3-oss/env-core": "^0.13.10",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-devtools": "latest",
+    "@tanstack/react-query": "latest",
+    "@tanstack/react-query-devtools": "latest",
+    "@tanstack/react-router": "latest",
+    "@tanstack/react-router-devtools": "latest",
+    "@tanstack/react-router-ssr-query": "latest",
+    "@tanstack/react-start": "latest",
+    "@tanstack/router-plugin": "^1.132.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.577.0",
+    "nitro": "npm:nitro-nightly@latest",
+    "radix-ui": "^1.4.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "shadcn": "^4.7.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.1.18",
+    "tw-animate-css": "^1.3.6",
+    "yup": "^1.7.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "@tanstack/devtools-vite": "latest",
+    "@tanstack/eslint-config": "latest",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^9.20.0",
+    "jsdom": "^28.1.0",
+    "prettier": "^3.8.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss"
+    ]
+  }
 }

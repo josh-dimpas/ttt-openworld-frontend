@@ -51,18 +51,18 @@ export function LoginForm({
                 <CardHeader className="space-y-4 text-center">
                     {logo && <div className="mx-auto">{logo}</div>}
                     <div>
-                        <CardTitle className="text-2xl font-black uppercase">{title}</CardTitle>
+                        <CardTitle className="font-black text-2xl uppercase">{title}</CardTitle>
                         <CardDescription className="mt-2">{description}</CardDescription>
                     </div>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="username" className="text-xs font-bold uppercase">
+                            <Label htmlFor="username" className="font-bold text-xs uppercase">
                                 Username
                             </Label>
                             <div className="relative">
-                                <Mail className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                                <Mail className="top-1/2 left-3 absolute w-4 h-4 text-muted-foreground -translate-y-1/2" />
                                 <Input
                                     id="username"
                                     type="text"
@@ -78,11 +78,11 @@ export function LoginForm({
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="password" className="text-xs font-bold uppercase">
+                            <Label htmlFor="password" className="font-bold text-xs uppercase">
                                 Password
                             </Label>
                             <div className="relative">
-                                <Lock className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                                <Lock className="top-1/2 left-3 absolute w-4 h-4 text-muted-foreground -translate-y-1/2" />
                                 <Input
                                     id="password"
                                     type={showPassword ? "text" : "password"}
@@ -97,23 +97,23 @@ export function LoginForm({
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2"
+                                    className="top-1/2 right-3 absolute text-muted-foreground hover:text-foreground -translate-y-1/2"
                                 >
                                     {showPassword ? (
-                                        <EyeOff className="h-4 w-4" />
+                                        <EyeOff className="w-4 h-4" />
                                     ) : (
-                                        <Eye className="h-4 w-4" />
+                                        <Eye className="w-4 h-4" />
                                     )}
                                 </button>
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
+                        <div className="flex justify-between items-center">
                             {onForgotPassword && (
                                 <button
                                     type="button"
                                     onClick={onForgotPassword}
-                                    className="text-primary text-sm font-bold hover:underline"
+                                    className="font-bold text-primary text-sm hover:underline"
                                 >
                                     Forgot password?
                                 </button>
@@ -126,7 +126,7 @@ export function LoginForm({
                             ) : (
                                 <>
                                     <span> Sign In</span>
-                                    <ArrowRight className="ml-2 h-4 w-4" />
+                                    <ArrowRight className="ml-2 w-4 h-4" />
                                 </>
                             )}
                         </Button>
@@ -135,16 +135,16 @@ export function LoginForm({
                             <>
                                 <div className="relative my-6">
                                     <div className="absolute inset-0 flex items-center">
-                                        <div className="border-foreground w-full border-t-2" />
+                                        <div className="border-foreground border-t-2 w-full" />
                                     </div>
                                     <div className="relative flex justify-center text-xs uppercase">
-                                        <span className="bg-card text-muted-foreground px-2 font-bold">
+                                        <span className="bg-card px-2 font-bold text-muted-foreground">
                                             Or continue with
                                         </span>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-3">
+                                <div className="gap-3 grid grid-cols-2">
                                     {socialProviders.includes("google") && (
                                         <Button variant="outline" type="button">
                                             {/* <Chrome className="mr-2 w-4 h-4" /> */}
@@ -162,12 +162,12 @@ export function LoginForm({
                         )}
 
                         {onSignUp && (
-                            <p className="text-muted-foreground mt-4 text-center text-sm">
+                            <p className="mt-4 text-muted-foreground text-sm text-center">
                                 Don't have an account?{" "}
                                 <button
                                     type="button"
                                     onClick={onSignUp}
-                                    className="text-primary font-bold hover:underline"
+                                    className="font-bold text-primary hover:underline"
                                 >
                                     Sign up
                                 </button>
@@ -222,18 +222,18 @@ export function SignUpForm({
                 <CardHeader className="space-y-4 text-center">
                     {logo && <div className="mx-auto">{logo}</div>}
                     <div>
-                        <CardTitle className="text-2xl font-black uppercase">{title}</CardTitle>
+                        <CardTitle className="font-black text-2xl uppercase">{title}</CardTitle>
                         <CardDescription className="mt-2">{description}</CardDescription>
                     </div>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name" className="text-xs font-bold uppercase">
+                            <Label htmlFor="name" className="font-bold text-xs uppercase">
                                 Username
                             </Label>
                             <div className="relative">
-                                <User className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                                <User className="top-1/2 left-3 absolute w-4 h-4 text-muted-foreground -translate-y-1/2" />
                                 <Input
                                     id="name"
                                     type="text"
@@ -251,12 +251,12 @@ export function SignUpForm({
                         <div className="space-y-2">
                             <Label
                                 htmlFor="signup-password"
-                                className="text-xs font-bold uppercase"
+                                className="font-bold text-xs uppercase"
                             >
                                 Password
                             </Label>
                             <div className="relative">
-                                <Lock className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                                <Lock className="top-1/2 left-3 absolute w-4 h-4 text-muted-foreground -translate-y-1/2" />
                                 <Input
                                     id="signup-password"
                                     type={showPassword ? "text" : "password"}
@@ -271,12 +271,12 @@ export function SignUpForm({
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2"
+                                    className="top-1/2 right-3 absolute text-muted-foreground hover:text-foreground -translate-y-1/2"
                                 >
                                     {showPassword ? (
-                                        <EyeOff className="h-4 w-4" />
+                                        <EyeOff className="w-4 h-4" />
                                     ) : (
-                                        <Eye className="h-4 w-4" />
+                                        <Eye className="w-4 h-4" />
                                     )}
                                 </button>
                             </div>
@@ -287,23 +287,23 @@ export function SignUpForm({
 
                         <Button type="submit" className="w-full" size="lg">
                             Create Account
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                            <ArrowRight className="ml-2 w-4 h-4" />
                         </Button>
 
                         {socialProviders && socialProviders.length > 0 && (
                             <>
                                 <div className="relative my-6">
                                     <div className="absolute inset-0 flex items-center">
-                                        <div className="border-foreground w-full border-t-2" />
+                                        <div className="border-foreground border-t-2 w-full" />
                                     </div>
                                     <div className="relative flex justify-center text-xs uppercase">
-                                        <span className="bg-card text-muted-foreground px-2 font-bold">
+                                        <span className="bg-card px-2 font-bold text-muted-foreground">
                                             Or continue with
                                         </span>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-3">
+                                <div className="gap-3 grid grid-cols-2">
                                     {socialProviders.includes("google") && (
                                         <Button variant="outline" type="button">
                                             {/* <Chrome className="mr-2 w-4 h-4" /> */}
@@ -321,12 +321,12 @@ export function SignUpForm({
                         )}
 
                         {onSignIn && (
-                            <p className="text-muted-foreground mt-4 text-center text-sm">
+                            <p className="mt-4 text-muted-foreground text-sm text-center">
                                 Already have an account?{" "}
                                 <button
                                     type="button"
                                     onClick={onSignIn}
-                                    className="text-primary font-bold hover:underline"
+                                    className="font-bold text-primary hover:underline"
                                 >
                                     Sign in
                                 </button>
@@ -373,14 +373,14 @@ export function ForgotPasswordForm({
             <div className={cn("mx-auto w-full max-w-md", className)}>
                 <Card>
                     <CardContent className="space-y-4 pt-6 text-center">
-                        <div className="bg-success/20 border-foreground mx-auto flex h-16 w-16 items-center justify-center border-3 shadow-[4px_4px_0px_hsl(var(--shadow-color))]">
-                            <Mail className="text-success h-8 w-8" />
+                        <div className="flex justify-center items-center bg-success/20 shadow-[4px_4px_0px_hsl(var(--shadow-color))] mx-auto border-3 border-foreground w-16 h-16">
+                            <Mail className="w-8 h-8 text-success" />
                         </div>
                         <div>
-                            <h3 className="text-xl font-black uppercase">Check your email</h3>
-                            <p className="text-muted-foreground mt-2 text-sm">
+                            <h3 className="font-black text-xl uppercase">Check your email</h3>
+                            <p className="mt-2 text-muted-foreground text-sm">
                                 We sent a password reset link to{" "}
-                                <span className="text-foreground font-bold">{email}</span>
+                                <span className="font-bold text-foreground">{email}</span>
                             </p>
                         </div>
                         <Button variant="outline" className="w-full" onClick={onBackToLogin}>
@@ -391,7 +391,7 @@ export function ForgotPasswordForm({
                             <button
                                 type="button"
                                 onClick={() => setSubmitted(false)}
-                                className="text-primary font-bold hover:underline"
+                                className="font-bold text-primary hover:underline"
                             >
                                 Click to resend
                             </button>
@@ -408,18 +408,18 @@ export function ForgotPasswordForm({
                 <CardHeader className="space-y-4 text-center">
                     {logo && <div className="mx-auto">{logo}</div>}
                     <div>
-                        <CardTitle className="text-2xl font-black uppercase">{title}</CardTitle>
+                        <CardTitle className="font-black text-2xl uppercase">{title}</CardTitle>
                         <CardDescription className="mt-2">{description}</CardDescription>
                     </div>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="reset-email" className="text-xs font-bold uppercase">
+                            <Label htmlFor="reset-email" className="font-bold text-xs uppercase">
                                 Email
                             </Label>
                             <div className="relative">
-                                <Mail className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                                <Mail className="top-1/2 left-3 absolute w-4 h-4 text-muted-foreground -translate-y-1/2" />
                                 <Input
                                     id="reset-email"
                                     type="email"
@@ -434,7 +434,7 @@ export function ForgotPasswordForm({
 
                         <Button type="submit" className="w-full" size="lg">
                             Send Reset Link
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                            <ArrowRight className="ml-2 w-4 h-4" />
                         </Button>
 
                         {onBackToLogin && (
@@ -497,6 +497,7 @@ export function OTPVerificationForm({
         }
 
         if (newOtp.every((digit) => digit !== "") && newOtp.join("").length === length) {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!hasSubmitted.current) {
                 hasSubmitted.current = true;
                 onSubmit?.(newOtp.join(""));
@@ -533,7 +534,7 @@ export function OTPVerificationForm({
                 <CardHeader className="space-y-4 text-center">
                     {logo && <div className="mx-auto">{logo}</div>}
                     <div>
-                        <CardTitle className="text-2xl font-black uppercase">{title}</CardTitle>
+                        <CardTitle className="font-black text-2xl uppercase">{title}</CardTitle>
                         <CardDescription className="mt-2">
                             {description ||
                                 `We sent a ${length}-digit code to ${email || "your email"}. Enter it below.`}
@@ -555,7 +556,7 @@ export function OTPVerificationForm({
                                 onChange={(e) => handleChange(index, e.target.value)}
                                 onKeyDown={(e) => handleKeyDown(index, e)}
                                 onPaste={handlePaste}
-                                className="h-14 w-12 text-center text-2xl font-black"
+                                className="w-12 h-14 font-black text-2xl text-center"
                             />
                         ))}
                     </div>
@@ -572,7 +573,7 @@ export function OTPVerificationForm({
                         disabled={otp.some((digit) => digit === "")}
                     >
                         Verify
-                        <ArrowRight className="ml-2 h-4 w-4" />
+                        <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
 
                     <div className="space-y-2 text-center">
@@ -582,7 +583,7 @@ export function OTPVerificationForm({
                                 <button
                                     type="button"
                                     onClick={onResend}
-                                    className="text-primary font-bold hover:underline"
+                                    className="font-bold text-primary hover:underline"
                                 >
                                     Resend
                                 </button>
@@ -623,7 +624,7 @@ export function AuthSplitLayout({
             {position === "left" && brandContent && (
                 <div
                     className={cn(
-                        "hidden flex-col justify-center p-12 lg:flex lg:w-1/2",
+                        "hidden lg:flex flex-col justify-center p-12 lg:w-1/2",
                         brandBackground,
                     )}
                 >
@@ -631,12 +632,12 @@ export function AuthSplitLayout({
                 </div>
             )}
 
-            <div className="flex flex-1 items-center justify-center p-4 md:p-8">{children}</div>
+            <div className="flex flex-1 justify-center items-center p-4 md:p-8">{children}</div>
 
             {position === "right" && brandContent && (
                 <div
                     className={cn(
-                        "hidden flex-col justify-center p-12 lg:flex lg:w-1/2",
+                        "hidden lg:flex flex-col justify-center p-12 lg:w-1/2",
                         brandBackground,
                     )}
                 >

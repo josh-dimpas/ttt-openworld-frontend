@@ -1,16 +1,15 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { Header } from '#/components/Header'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
-import { Header } from "@/components/Header";
-
-export const Route = createFileRoute("/(anon)")({
-    component: RouteComponent,
-});
+export const Route = createFileRoute('/(anon)')({
+  component: RouteComponent,
+})
 
 function RouteComponent() {
-    return (
-        <div className="mx-auto flex h-full flex-col items-center">
-            <Header />
-            <Outlet />
-        </div>
-    );
+  return (
+    <div className="flex flex-col items-center mx-auto h-full">
+      <Header />
+      <Outlet />
+    </div>
+  )
 }
