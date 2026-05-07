@@ -10,20 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as anonRouteRouteImport } from './routes/(anon)/route'
-import { Route as anonIndexRouteImport } from './routes/(anon)/index'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as authJoinGameRouteImport } from './routes/(auth)/join-game'
 import { Route as authCreateGameRouteImport } from './routes/(auth)/create-game'
 import { Route as anonRegisterRouteImport } from './routes/(anon)/register'
 import { Route as anonLoginRouteImport } from './routes/(anon)/login'
+import { Route as authLobbyRouteRouteImport } from './routes/(auth)/lobby/route'
+import { Route as authLobbyIndexRouteImport } from './routes/(auth)/lobby/index'
+import { Route as authLobbyJoinRouteImport } from './routes/(auth)/lobby/join'
+import { Route as authLobbyCodeRouteImport } from './routes/(auth)/lobby/$code'
+import { Route as authGameGameidRouteImport } from './routes/(auth)/game/$gameid'
 
 const anonRouteRoute = anonRouteRouteImport.update({
   id: '/(anon)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const anonIndexRoute = anonIndexRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => anonRouteRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 const authJoinGameRoute = authJoinGameRouteImport.update({
   id: '/(auth)/join-game',
@@ -45,49 +50,115 @@ const anonLoginRoute = anonLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => anonRouteRoute,
 } as any)
+const authLobbyRouteRoute = authLobbyRouteRouteImport.update({
+  id: '/(auth)/lobby',
+  path: '/lobby',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authLobbyIndexRoute = authLobbyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => authLobbyRouteRoute,
+} as any)
+const authLobbyJoinRoute = authLobbyJoinRouteImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => authLobbyRouteRoute,
+} as any)
+const authLobbyCodeRoute = authLobbyCodeRouteImport.update({
+  id: '/$code',
+  path: '/$code',
+  getParentRoute: () => authLobbyRouteRoute,
+} as any)
+const authGameGameidRoute = authGameGameidRouteImport.update({
+  id: '/(auth)/game/$gameid',
+  path: '/game/$gameid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/lobby': typeof authLobbyRouteRouteWithChildren
   '/login': typeof anonLoginRoute
   '/register': typeof anonRegisterRoute
   '/create-game': typeof authCreateGameRoute
   '/join-game': typeof authJoinGameRoute
-  '/': typeof anonIndexRoute
+  '/game/$gameid': typeof authGameGameidRoute
+  '/lobby/$code': typeof authLobbyCodeRoute
+  '/lobby/join': typeof authLobbyJoinRoute
+  '/lobby/': typeof authLobbyIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof anonLoginRoute
   '/register': typeof anonRegisterRoute
   '/create-game': typeof authCreateGameRoute
   '/join-game': typeof authJoinGameRoute
-  '/': typeof anonIndexRoute
+  '/game/$gameid': typeof authGameGameidRoute
+  '/lobby/$code': typeof authLobbyCodeRoute
+  '/lobby/join': typeof authLobbyJoinRoute
+  '/lobby': typeof authLobbyIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/(anon)': typeof anonRouteRouteWithChildren
+  '/(auth)/lobby': typeof authLobbyRouteRouteWithChildren
   '/(anon)/login': typeof anonLoginRoute
   '/(anon)/register': typeof anonRegisterRoute
   '/(auth)/create-game': typeof authCreateGameRoute
   '/(auth)/join-game': typeof authJoinGameRoute
-  '/(anon)/': typeof anonIndexRoute
+  '/(auth)/game/$gameid': typeof authGameGameidRoute
+  '/(auth)/lobby/$code': typeof authLobbyCodeRoute
+  '/(auth)/lobby/join': typeof authLobbyJoinRoute
+  '/(auth)/lobby/': typeof authLobbyIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/register' | '/create-game' | '/join-game' | '/'
+  fullPaths:
+    | '/'
+    | '/lobby'
+    | '/login'
+    | '/register'
+    | '/create-game'
+    | '/join-game'
+    | '/game/$gameid'
+    | '/lobby/$code'
+    | '/lobby/join'
+    | '/lobby/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/register' | '/create-game' | '/join-game' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/create-game'
+    | '/join-game'
+    | '/game/$gameid'
+    | '/lobby/$code'
+    | '/lobby/join'
+    | '/lobby'
   id:
     | '__root__'
+    | '/'
     | '/(anon)'
+    | '/(auth)/lobby'
     | '/(anon)/login'
     | '/(anon)/register'
     | '/(auth)/create-game'
     | '/(auth)/join-game'
-    | '/(anon)/'
+    | '/(auth)/game/$gameid'
+    | '/(auth)/lobby/$code'
+    | '/(auth)/lobby/join'
+    | '/(auth)/lobby/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   anonRouteRoute: typeof anonRouteRouteWithChildren
+  authLobbyRouteRoute: typeof authLobbyRouteRouteWithChildren
   authCreateGameRoute: typeof authCreateGameRoute
   authJoinGameRoute: typeof authJoinGameRoute
+  authGameGameidRoute: typeof authGameGameidRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,12 +170,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof anonRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(anon)/': {
-      id: '/(anon)/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof anonIndexRouteImport
-      parentRoute: typeof anonRouteRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(auth)/join-game': {
       id: '/(auth)/join-game'
@@ -134,29 +205,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof anonLoginRouteImport
       parentRoute: typeof anonRouteRoute
     }
+    '/(auth)/lobby': {
+      id: '/(auth)/lobby'
+      path: '/lobby'
+      fullPath: '/lobby'
+      preLoaderRoute: typeof authLobbyRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/lobby/': {
+      id: '/(auth)/lobby/'
+      path: '/'
+      fullPath: '/lobby/'
+      preLoaderRoute: typeof authLobbyIndexRouteImport
+      parentRoute: typeof authLobbyRouteRoute
+    }
+    '/(auth)/lobby/join': {
+      id: '/(auth)/lobby/join'
+      path: '/join'
+      fullPath: '/lobby/join'
+      preLoaderRoute: typeof authLobbyJoinRouteImport
+      parentRoute: typeof authLobbyRouteRoute
+    }
+    '/(auth)/lobby/$code': {
+      id: '/(auth)/lobby/$code'
+      path: '/$code'
+      fullPath: '/lobby/$code'
+      preLoaderRoute: typeof authLobbyCodeRouteImport
+      parentRoute: typeof authLobbyRouteRoute
+    }
+    '/(auth)/game/$gameid': {
+      id: '/(auth)/game/$gameid'
+      path: '/game/$gameid'
+      fullPath: '/game/$gameid'
+      preLoaderRoute: typeof authGameGameidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface anonRouteRouteChildren {
   anonLoginRoute: typeof anonLoginRoute
   anonRegisterRoute: typeof anonRegisterRoute
-  anonIndexRoute: typeof anonIndexRoute
 }
 
 const anonRouteRouteChildren: anonRouteRouteChildren = {
   anonLoginRoute: anonLoginRoute,
   anonRegisterRoute: anonRegisterRoute,
-  anonIndexRoute: anonIndexRoute,
 }
 
 const anonRouteRouteWithChildren = anonRouteRoute._addFileChildren(
   anonRouteRouteChildren,
 )
 
+interface authLobbyRouteRouteChildren {
+  authLobbyCodeRoute: typeof authLobbyCodeRoute
+  authLobbyJoinRoute: typeof authLobbyJoinRoute
+  authLobbyIndexRoute: typeof authLobbyIndexRoute
+}
+
+const authLobbyRouteRouteChildren: authLobbyRouteRouteChildren = {
+  authLobbyCodeRoute: authLobbyCodeRoute,
+  authLobbyJoinRoute: authLobbyJoinRoute,
+  authLobbyIndexRoute: authLobbyIndexRoute,
+}
+
+const authLobbyRouteRouteWithChildren = authLobbyRouteRoute._addFileChildren(
+  authLobbyRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   anonRouteRoute: anonRouteRouteWithChildren,
+  authLobbyRouteRoute: authLobbyRouteRouteWithChildren,
   authCreateGameRoute: authCreateGameRoute,
   authJoinGameRoute: authJoinGameRoute,
+  authGameGameidRoute: authGameGameidRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
