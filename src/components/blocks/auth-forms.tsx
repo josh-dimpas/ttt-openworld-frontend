@@ -280,9 +280,6 @@ export function SignUpForm({
                                     )}
                                 </button>
                             </div>
-                            <p className="text-muted-foreground text-xs">
-                                Must be at least 8 characters
-                            </p>
                         </div>
 
                         <Button type="submit" className="w-full" size="lg">
