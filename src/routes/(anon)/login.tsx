@@ -1,14 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { AuthForms } from '@/components/blocks/auth-forms'
 import { getRouter } from '#/router'
-// import { DjangoApiService } from "@/services/ApiService.Django";
+import { loginFn } from '#/server/auth'
+import { AuthForms } from '@/components/blocks/auth-forms'
 
 export const Route = createFileRoute('/(anon)/login')({
   component: RouteComponent,
 })
-
-// const api = new DjangoApiService();
 
 function RouteComponent() {
   const router = getRouter()
@@ -20,9 +18,7 @@ function RouteComponent() {
       className="pt-24"
       onSignUp={() => router.navigate({ to: '/register' })}
       onSubmit={async (data) => {
-        // const response = await api.fetch("login", data);
-        // api.accessToken = response.access;
-        // api.refreshToken = response.refresh;
+        await loginFn({ data })
         router.navigate({ to: '/' })
       }}
     />
