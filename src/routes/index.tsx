@@ -1,16 +1,18 @@
 import { Header } from '#/components/Header'
 import { Logo } from '#/components/Logo'
 import { Button } from '#/components/ui/button'
-import { getCurrentUserFn } from '#/server/auth'
-import { getCurrentLobbyFn } from '#/server/lobbies'
+import Preload from '#/Preload'
+import { currentUserFn } from '#/server/auth'
+import { currentLobbyFn } from '#/server/lobbies'
 import { createFileRoute, Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
   component: Home,
   loader: async () => ({
-    session: await getCurrentUserFn(),
-    lobby: await getCurrentLobbyFn(),
+    session: await currentUserFn(),
+    lobby: await currentLobbyFn(),
   }),
+  pendingComponent: Preload,
 })
 
 function Home() {
@@ -19,6 +21,7 @@ function Home() {
   return (
     <div className="flex flex-col h-screen">
       <Header user={session} />
+
       <div className="relative flex flex-col items-center gap-2 pt-[10vh] shrink grow">
         <Logo />
         <div className="max-h-[20vh] shrink grow" />
@@ -71,7 +74,9 @@ function Home() {
               </div>
             )}
 
-            <Button className="bg-amber-500 w-full">History</Button>
+            <Button className="bg-amber-500 w-full" asChild>
+              <Link to="/events">History</Link>
+            </Button>
           </div>
         ) : (
           <div>- Please Login -</div>

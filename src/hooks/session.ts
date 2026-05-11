@@ -26,13 +26,13 @@ export const getSessionData = createServerFn({ method: 'GET' }).handler(
 export const setSessionData = createServerFn({ method: 'POST' })
   .inputValidator(
     z.object({
-      access: z.string(),
-      refresh: z.string(),
-      user_id: z.number(),
-      username: z.string(),
+      access: z.string().optional(),
+      refresh: z.string().optional(),
+      user_id: z.number().optional(),
+      username: z.string().optional(),
     }),
   )
   .handler(async ({ data }) => {
     const session = await useAppSession()
-    await session.update(data)
+    await session.update({ ...session.data, ...data })
   })

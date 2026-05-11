@@ -13,6 +13,8 @@ export function getRouter() {
     scrollRestoration: true,
     defaultPreload: 'intent',
     defaultPreloadStaleTime: 0,
+    defaultGcTime: 1000 * 60 * 30,
+    defaultStaleTime: 0,
   })
 
   setupRouterSsrQueryIntegration({ router, queryClient: context.queryClient })

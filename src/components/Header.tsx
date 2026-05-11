@@ -8,14 +8,19 @@ import { logoutFn } from '#/server/auth'
 import { useMutation } from '@tanstack/react-query'
 import { getRouter } from '#/router'
 import { Loader2 } from 'lucide-react'
+import { WebsocketService } from '#/core/Websockets'
 
 export function Header({ user }: { user?: UserData }) {
   const router = getRouter()
   const pathname = useLocation({ select: (l) => l.pathname })
   const _logout = useServerFn(logoutFn)
+  const ws = new WebsocketService()
 
   const { isPending: isLoggingOut, mutate: logout } = useMutation({
-    mutationFn: _logout,
+    mutationFn: async () => {
+      await _logout()
+      ws.disconnect()
+    },
     onSuccess: () => router.navigate({ to: '/', reloadDocument: true }),
   })
 
@@ -34,7 +39,7 @@ export function Header({ user }: { user?: UserData }) {
               disabled={isLoggingOut}
               variant="link"
               className="underline"
-              onClick={() => logout({})}
+              onClick={() => logout()}
             >
               {isLoggingOut && <Loader2 className="animate-spin" />}
               Logout

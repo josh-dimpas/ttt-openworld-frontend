@@ -1,11 +1,15 @@
-import { useAppSession } from '#/hooks/session'
+import { setSessionData, useAppSession } from '#/hooks/session'
 import { api } from '#/utils/api'
 import { hasSession } from '#/utils/session'
-import { createServerFn } from '@tanstack/react-start'
+import {
+  createIsomorphicFn,
+  createServerFn,
+  useServerFn,
+} from '@tanstack/react-start'
 import z from 'zod'
 
 // Get current user
-export const getCurrentUserFn = createServerFn({ method: 'GET' }).handler(
+export const currentUserFn = createServerFn({ method: 'GET' }).handler(
   async () => {
     const session = await useAppSession()
     if (!hasSession(session.data)) return undefined
@@ -32,6 +36,13 @@ export const loginFn = createServerFn({ method: 'POST' })
 
     return payload
   })
+
+export const setAccessToken = createIsomorphicFn()
+  .client(
+    async (token) =>
+      await useServerFn(setSessionData)({ data: { access: token } }),
+  )
+  .server(async (token) => await setSessionData({ data: { access: token } }))
 
 export const registerFn = createServerFn({ method: 'POST' })
   .inputValidator(z.object({ username: z.string(), password: z.string() }))

@@ -3,11 +3,13 @@ export interface Game {
   players: [GamePlayer, GamePlayer]
   config: GameConfig
   state: GameState
+  reveal_buffer: Uint8Array
+  can_put: boolean
 }
 
 export interface GamePlayer {
   id: number
-  revealBuffer: Uint32Array
+  revealBuffer: Uint8Array
 }
 
 export interface GameConfig {
@@ -21,8 +23,19 @@ export interface GameConfig {
 }
 
 export interface GameState {
-  mapLayer: Uint32Array
-  dataLayer: Uint32Array // Contains map data
+  mapLayer: Uint8Array
+  pieces: Uint8Array // Contains map data
 
   turn: GamePlayer['id']
+}
+
+export interface GameEvent {
+  id: number
+  account: number
+  x: number
+  y: number
+  piece_type: 'O' | 'X'
+  reveal_radius: number
+  event_type: 'put' | 'initial'
+  created_at: string
 }

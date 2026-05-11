@@ -10,7 +10,6 @@ export function CopyButton({ text }: { text: string }) {
 
     navigator.clipboard
       .writeText(text)
-      .then(() => console.log('Text copied'))
       .catch((err) => console.error('Failed to copy:', err))
 
     setTimeout(() => {
@@ -19,7 +18,12 @@ export function CopyButton({ text }: { text: string }) {
   }
 
   return (
-    <Button size="icon" className="bg-white size-8" onClick={copy}>
+    <Button
+      size="icon"
+      className="size-8"
+      onClick={copy}
+      variant={copied ? 'secondary' : 'outline'}
+    >
       {copied ? <Check /> : <Copy />}
     </Button>
   )

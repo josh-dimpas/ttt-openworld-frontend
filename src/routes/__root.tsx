@@ -14,6 +14,7 @@ import { env } from '#/env'
 import type { UserData } from '#/types/auth'
 import type { QueryClient } from '@tanstack/react-query'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
+import { WebsocketProvider } from '#/contexts/WebsocketProvider'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -38,8 +39,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="w-screen h-screen min-h-0">
-        <TooltipProvider>{children}</TooltipProvider>
+      <body className="grid-pattern w-screen h-screen min-h-0">
+        <WebsocketProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </WebsocketProvider>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
