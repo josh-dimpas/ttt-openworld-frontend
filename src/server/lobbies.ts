@@ -1,10 +1,10 @@
-import { useAppSession } from '#/hooks/session'
 import type { Game } from '#/types/game'
 import type { Lobby } from '#/types/lobby'
 import { api } from '#/utils/api'
 import { hasSession } from '#/utils/session'
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
+import { useAppSession } from './session'
 
 export const currentLobbyFn = createServerFn({ method: 'POST' }).handler(
   async () => {

@@ -1,20 +1,6 @@
-import { env } from '#/env'
-import type { UserData } from '#/types/auth'
+import { useAppSession } from '#/server/session'
 import { createServerFn } from '@tanstack/react-start'
-import { useSession } from '@tanstack/react-start/server'
 import z from 'zod'
-
-export function useAppSession() {
-  return useSession<UserData>({
-    name: 'app-session',
-    password: env.VITE_SESSION_SECRET,
-    cookie: {
-      secure: import.meta.env.PROD,
-      sameSite: 'lax',
-      httpOnly: true,
-    },
-  })
-}
 
 export const getSessionData = createServerFn({ method: 'GET' }).handler(
   async () => {

@@ -1,4 +1,4 @@
-import { setSessionData, useAppSession } from '#/hooks/session'
+import { setSessionData } from '#/hooks/session'
 import { api } from '#/utils/api'
 import { hasSession } from '#/utils/session'
 import {
@@ -7,6 +7,7 @@ import {
   useServerFn,
 } from '@tanstack/react-start'
 import z from 'zod'
+import { useAppSession } from './session'
 
 // Get current user
 export const currentUserFn = createServerFn({ method: 'GET' }).handler(
