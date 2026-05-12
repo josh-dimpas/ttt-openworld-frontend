@@ -54,17 +54,22 @@ function EventList({
 }) {
   return (
     <div className="flex flex-col min-h-0 overflow-auto">
-      {events.map((e, i) => {
-        return (
-          <Button
-            key={e.id}
-            onMouseEnter={() => onShow(e, i)}
-            className="bg-white hover:bg-amber-400"
-          >
-            {e.piece_type} {e.event_type} {e.x}, {e.y}
-          </Button>
-        )
-      })}
+      <div className="bg-white border-b-3 border-l-3 font-black text-center">
+        Events
+      </div>
+      <div className="flex flex-col min-h-0 overflow-auto">
+        {events.map((e, i) => {
+          return (
+            <Button
+              key={e.id}
+              onMouseEnter={() => onShow(e, i)}
+              className="bg-white hover:bg-amber-400"
+            >
+              {e.piece_type} {e.event_type} {e.x}, {e.y}
+            </Button>
+          )
+        })}
+      </div>
     </div>
   )
 }

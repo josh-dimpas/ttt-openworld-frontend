@@ -43,6 +43,7 @@ function GameList({ games }: { games: Game[] }) {
 
   return (
     <div className="flex flex-col">
+      <div className="bg-white font-black text-center">GAMES</div>
       {games.map((g) => {
         const isActive = route.pathname === `/events/${g.id}`
 
