@@ -31,17 +31,6 @@ export function Aggregator({ controller, ...props }: AggregatorProps) {
       className={`bg-black grow top-0 overflow-auto flex items-center justify-center`}
     >
       <canvas className="w-full h-full" ref={canvasRef} />
-      {/* <RendererStats
-        controller={controller}
-        spacerRef={spacerRef}
-        canvasRef={canvasRef}
-        containerRef={containerRef}
-      />
-      <RenderTurnStatus controller={controller} />
-      <RenderScores controller={controller} />
-      <div className="top-0 left-0 fixed bg-white pr-4 pl-2 border-3">
-        <BackButton text="Exit" />
-      </div> */}
     </div>
   )
 }

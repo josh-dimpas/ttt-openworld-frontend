@@ -1,4 +1,5 @@
 import type { GameEvent } from '#/types/game'
+import { i2c } from '#/utils/number'
 import { EventEmitter } from '../EventEmitter'
 
 export class EventAggregator extends EventEmitter {
@@ -7,13 +8,14 @@ export class EventAggregator extends EventEmitter {
   // @ts-expect-error initialized on component mount
   ctx: CanvasRenderingContext2D
 
-  CELL_SIZE = 50
+  CELL_SIZE = 40
 
   #running = false
   #animationId: number | null = null
   #_render = this.#render.bind(this)
 
   #sources: GameEvent[] = []
+  #pieces: Map<string, GameEvent> = new Map()
   revealMap: [x: number, y: number][] = []
 
   get sources() {
@@ -32,23 +34,38 @@ export class EventAggregator extends EventEmitter {
   revealTiles(objects: GameEvent[]) {
     const seen = new Set()
     const result: [number, number][] = []
+    this.#pieces.clear()
 
-    for (const { x, y, reveal_radius } of objects) {
-      for (let dy = -reveal_radius; dy <= reveal_radius; dy++) {
-        for (let dx = -reveal_radius; dx <= reveal_radius; dx++) {
-          const tx = x + dx
-          const ty = y + dy
-          const key = `${tx},${ty}`
+    for (const ev of objects) {
+      const { x, y, reveal_radius } = ev
+      const minx = x - reveal_radius
+      const miny = y - reveal_radius
 
-          if (!seen.has(key)) {
-            seen.add(key)
-            result.push([tx, ty])
-          }
-        }
-      }
+      const width = reveal_radius * 2 + 1
+      const total = width ** 2
+
+      const key = this.createHash(x, y)
+      this.#pieces.set(key, ev)
+
+      Array(total)
+        .fill(0)
+        .forEach((_, i) => {
+          const [_x, _y] = i2c(i, width)
+          const tx = minx + _x
+          const ty = miny + _y
+
+          const key = this.createHash(tx, ty)
+          if (seen.has(key)) return
+          seen.add(key)
+          result.push([tx, ty])
+        })
     }
 
     return result
+  }
+
+  createHash(x: number, y: number) {
+    return `${x},${y}`
   }
 
   get running() {
@@ -126,9 +143,62 @@ export class EventAggregator extends EventEmitter {
     this.#animationId = requestAnimationFrame(this.#_render)
 
     this.emit('render')
-    ctx.fillStyle = 'white'
+    ctx.fillStyle = 'black'
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
-    // Perform all rendering here
+    // ctx.strokeStyle = 'black'
+    // for (let i = 0; i < 50; i++) {
+    //   ctx.moveTo(i * this.CELL_SIZE, 0)
+    //   ctx.lineTo(i * this.CELL_SIZE, h)
+
+    //   ctx.moveTo(0, i * this.CELL_SIZE)
+    //   ctx.lineTo(w, i * this.CELL_SIZE)
+    // }
+    // ctx.stroke()
+
+    this.renderMap()
+  }
+
+  renderMap() {
+    const { ctx } = this
+
+    const fullCell = this.CELL_SIZE
+    const halfCell = fullCell / 2
+
+    ctx.font = `${halfCell}px Arial`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+
+    for (const [_x, _y] of this.revealMap) {
+      const [x, y] = this.computeCoordinate(_x, _y)
+
+      ctx.fillStyle = 'white'
+      ctx.fillRect(x, y, fullCell - 1, fullCell - 0.5)
+
+      ctx.fillStyle = 'black'
+      const ev = this.#pieces.get(this.createHash(_x, _y))
+      if (ev && ev.event_type == 'put') {
+        this.ctx.fillText(ev.piece_type, x + halfCell, y + halfCell)
+      }
+    }
+
+    ctx.fill()
+  }
+
+  computeCoordinate(x: number, y: number) {
+    const fullCell = this.CELL_SIZE
+    const halfCell = fullCell / 2
+
+    const w = this.canvas.width
+    const h = this.canvas.height
+
+    // offset the center
+    const cx = w / 2 - fullCell
+    const cy = h / 2 - fullCell
+
+    const ox = cx + x * fullCell - halfCell
+    const oy = cy + y * fullCell - halfCell
+
+    return [ox, oy]
   }
 }

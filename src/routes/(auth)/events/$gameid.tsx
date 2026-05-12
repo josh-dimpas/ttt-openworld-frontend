@@ -5,12 +5,7 @@ import Preload from '#/Preload'
 import { getGameEvents, getGameFn } from '#/server/games'
 import type { GameEvent } from '#/types/game'
 import { requireAuth } from '#/utils/session'
-import {
-  createFileRoute,
-  Link,
-  redirect,
-  useLocation,
-} from '@tanstack/react-router'
+import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(auth)/events/$gameid')({
   ssr: false,
@@ -29,7 +24,7 @@ export const Route = createFileRoute('/(auth)/events/$gameid')({
 })
 
 function RouteComponent() {
-  const { events, game } = Route.useLoaderData()
+  const { events } = Route.useLoaderData()
   const controller = new EventAggregator()
 
   function setEvent(events: GameEvent[]) {
@@ -41,7 +36,7 @@ function RouteComponent() {
       <EventList
         events={events}
         onShow={(data, i) => {
-          setEvent(events.slice(0, i))
+          setEvent(events.slice(0, i + 1))
           return console.log(data)
         }}
       />
