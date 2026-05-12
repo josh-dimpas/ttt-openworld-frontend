@@ -1,245 +1,35 @@
-Welcome to your new TanStack Start app! 
+# TicTacToe Openworld
 
-# Getting Started
+The project is a multiplayer open-world tic-tac-toe game. It uses WebSocket for real-time updates and Tanstack tools for handling caching and fetching, and all non-canvas related pages are server side rendered, utilizing server functions. It features a Lobby system for pooling players first then a customize canvas renderer for displaying game objects. The gameplay offers a non-ending (almost) open world top down view, and a fog of war system that prevents players from knowing the state of the other (configurable).
 
-To run this application:
+## Technical Details
 
-```bash
-pnpm install
-pnpm dev
-```
+### Game Structure
 
-# Building For Production
+A game session can have a maximum theoretical size of `107,374,182,400` `(5^2 * 2^32)` number of cells to be populated by either X or O, despite that, this maximum will only take up `~57.445` gb raw uncompressed, which is still big on its own, but storing 107 billion bits takes up to ~13.4 gb so a 4.28x increase is not bad on its own when the game features a multi-directional expansion and a fog of war information, not including the pieces information. This is possible with the chunk-based system, where each chunk consist of the coordinate information + the chunk data, all stored in a bit buffer.
 
-To build this application for production:
-
-```bash
-pnpm build
-```
-
-## Testing
-
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
-
-```bash
-pnpm test
-```
-
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-### Removing Tailwind CSS
-
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `pnpm add @tailwindcss/vite tailwindcss --dev`
-
-## Linting & Formatting
-
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
-
-```bash
-pnpm lint
-pnpm format
-pnpm check
-```
-
-
-## Deploy with Nitro
-
-This project uses Nitro as a generic server adapter, so it can run on any Node-compatible host.
-
-```bash
-npm run build
-node dist/server/index.mjs
-```
-
-The build output is a self-contained Node server. To deploy, push the `dist/` directory to your host (Render, Fly.io, your own VPS, etc.) and run the server command above.
-
-For host-specific presets (Vercel, Netlify, Cloudflare, AWS Lambda, etc.) and tuning, see https://v3.nitro.build/deploy.
-
-
-## Shadcn
-
-Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
-
-```bash
-pnpm dlx shadcn@latest add button
-```
-
-
-## T3Env
-
-- You can use T3Env to add type safety to your environment variables.
-- Add Environment variables to the `src/env.mjs` file.
-- Use the environment variables in your code.
-
-### Usage
+For example, the data structure for storing fog of war information uses this arrangement:
 
 ```ts
-import { env } from "#/env";
-
-console.log(env.VITE_APP_TITLE);
+​[ <chunk_1_x:int16> <chunk_1_y:int16> <chunk_1_data:bin25> ...] // <---- Buffer Array
+         ^                  ^                   ^
+[ 0000000000000000 0000000000000000 1110011100111000000000000 ] // <---- Chunk Example
 ```
 
+The example above is a RevealChunk, it contains 2x16bit integers for storing coordinates and a 25-bit data where each bit represents if that cell is revealed to the player or not. In the example above, the chunk is at 0, 0, containing the reveal information for cells between 0,0 to 4,4 (each chunk contains a 5x5 grid). The data represents a 3x3 revealed square where its center is at 1,1, in fact, this is the initial reveal chunk for all games, as the game starts with a 3x3 initially revealed cells.
 
+The PieceChunk contains the pieces (X or O) works similarly. The only difference is the length of the data section. The main problem with a 25-bit data is each bit can only contain 1 or 0. A tictactoe cell can have 3 states: X, O and an empty cell, so the whole data section of the chunk contains 50-bits instead, and each cell takes up 2-bits.
 
+### Rendering
 
+In order to make use of virtualization, the rendering approach consists of an extra layer that can act as a spacer, while the canvas being fixed in the screen. This spacer will receive all the input events and relay it for the canvas to display.
 
+It is not a practical solution since a canvas is only you need to localized render, however, I wanted the scrollbars to appear and simulate a virtualized scrolling behavior.
 
-## Routing
+## Future Improvements
 
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
+- The data structure would benefit greatly from even a simple RLE compression due to the number of consecutive 0 and 1s.
 
-### Adding A Route
+- The pieces data can only support 4-states, normally that is fine since we only need 3, however, the original idea is to add "powerups" in the map the players can click on to to produce a certain effect
 
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+- Interception for event sourcing could have a more elegant approach
