@@ -1,7 +1,7 @@
 export class NibbleArray {
     data: Uint32Array;
     length = 0;
-    #cursor: number = 0;
+    #cursor = 0;
 
     #schema: number[] = [];
     #schemaLength = 0;

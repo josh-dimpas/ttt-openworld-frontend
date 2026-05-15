@@ -41,7 +41,7 @@ export function useSearchQuery<T>(
                     ? (newValue as (prev: T | undefined) => T)(value)
                     : newValue;
 
-            setValue(resolvedValue as T);
+            setValue(resolvedValue);
 
             const params = new URLSearchParams(window.location.search);
             params.set(key, JSON.stringify(resolvedValue));
@@ -54,7 +54,7 @@ export function useSearchQuery<T>(
 
     useEffect(() => {
         const handlePopState = () => {
-            setValue(getValue() as T);
+            setValue(getValue());
         };
 
         window.addEventListener("popstate", handlePopState);

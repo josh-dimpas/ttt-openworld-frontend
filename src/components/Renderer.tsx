@@ -137,6 +137,7 @@ function RendererStats({
 function RenderOtherMouse({ controller }: { controller: GraphicsController }) {
   const other = useSnapshot(controller.input.mouseOther)
 
+  // eslint-disable-next-line
   if (!controller.camera.canvas) return <div></div>
 
   const { left: l, top: t } = controller.camera.canvasRect
@@ -183,7 +184,7 @@ function RenderScores({ controller }: { controller: GraphicsController }) {
   )
 }
 
-function RenderTurnStatus({ controller }: { controller: GraphicsController }) {
+function RenderTurnStatus(_: { controller: GraphicsController }) {
   const game = useSnapshot(gameStore)
   const canput = game.game?.can_put ?? false
 

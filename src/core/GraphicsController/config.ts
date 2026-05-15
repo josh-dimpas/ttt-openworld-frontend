@@ -3,12 +3,12 @@ import { subscribeKey } from 'valtio/utils'
 import { gameStore } from '@/stores/game'
 
 import type { Game } from '#/types/game'
-import { PieceBuffer } from '../PieceBuffer'
+import { proxy } from 'valtio'
 import type { Strike } from '../PieceBuffer'
+import { PieceBuffer } from '../PieceBuffer'
 import { RevealBuffer } from '../RevealBuffer'
 import type { GraphicsController } from './main'
 import { GraphicsControllerSubModule } from './submodule'
-import { proxy } from 'valtio'
 
 // Handles syncing of the current game state and config by managing the Valtio observable
 export class GraphicsConfigController extends GraphicsControllerSubModule {
@@ -58,10 +58,10 @@ export class GraphicsConfigController extends GraphicsControllerSubModule {
     if (!game)
       throw new Error('Setting up ConfigController without Game Config')
 
-    this.#stop = subscribeKey(gameStore, 'game', (game) => {
-      if (!game) throw new Error('Game has been removed from the store')
-      console.log('UPDATING GAME: ', game)
-      this.updateGame(game)
+    this.#stop = subscribeKey(gameStore, 'game', (g) => {
+      if (!g) throw new Error('Game has been removed from the store')
+      console.log('UPDATING GAME: ', g)
+      this.updateGame(g)
     })
 
     this.updateGame(game)

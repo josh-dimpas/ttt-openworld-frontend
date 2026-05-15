@@ -54,9 +54,9 @@ export class EventAggregator extends EventEmitter {
           const tx = minx + _x
           const ty = miny + _y
 
-          const key = this.createHash(tx, ty)
-          if (seen.has(key)) return
-          seen.add(key)
+          const cellKey = this.createHash(tx, ty)
+          if (seen.has(cellKey)) return
+          seen.add(cellKey)
           result.push([tx, ty])
         })
     }

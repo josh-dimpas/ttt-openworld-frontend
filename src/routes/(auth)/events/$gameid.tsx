@@ -28,8 +28,8 @@ function RouteComponent() {
   const { events } = Route.useLoaderData()
   const controller = new EventAggregator()
 
-  function setEvent(events: GameEvent[]) {
-    controller.sources = events
+  function setEvent(values: GameEvent[]) {
+    controller.sources = values
   }
 
   return (
