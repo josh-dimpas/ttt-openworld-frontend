@@ -1,7 +1,7 @@
 import { gameStore } from '@/stores/game'
 import { m32 } from '@/utils/mullberry32'
 
-import { c2i, dot, fade, i2c, lerp } from '../../utils/number'
+import { c2i, dot, fade, lerp } from '../../utils/number'
 import type { GraphicsController } from './main'
 import { GraphicsControllerSubModule } from './submodule'
 
@@ -103,43 +103,6 @@ export class GraphicsTerrainController extends GraphicsControllerSubModule {
     this.renderGrid()
     return
 
-    const [columns, rows] = this.gridSize
-    const grids = columns * rows
-
-    // this.delta = ((Date.now() % 64) / 128) * Math.PI;
-
-    if (this.showGuideLines) {
-      ctx.beginPath()
-
-      // Draw columns
-      for (let i = 0; i < columns; i++) {
-        const x = l + i * cellSize
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, ph)
-      }
-
-      // Draw Rows
-      for (let i = 0; i < rows; i++) {
-        const y = t + i * cellSize
-        ctx.moveTo(0, y)
-        ctx.lineTo(pw, y)
-      }
-
-      ctx.stroke()
-      ctx.closePath()
-    }
-
-    // Draw Individual Grid
-    for (let i = 0; i < grids; i++) {
-      const [ix, iy] = i2c(i, columns)
-
-      const x = l + ix * cellSize
-      const y = t + iy * cellSize
-
-      const rIndex = this.getGridIndexAtViewport(x, y)
-
-      this.renderPerlin(x, y, rIndex)
-    }
   }
 
   renderGrid() {
@@ -155,6 +118,7 @@ export class GraphicsTerrainController extends GraphicsControllerSubModule {
 
     ctx.beginPath()
     ctx.lineWidth = 1
+    ctx.strokeStyle = 'black'
 
     // cols
     for (let i = 0; i < rows; i++) {
@@ -270,26 +234,6 @@ export class GraphicsTerrainController extends GraphicsControllerSubModule {
 
     return
 
-    // Get # of pixels
-    const cellArea = this.cellSize ** 2
-    const resolution = 1 // Smaller the better
-
-    const buffer = ctx.createImageData(this.cellSize, this.cellSize)
-
-    for (let i = 0; i < cellArea; i += resolution) {
-      const [px, py] = i2c(i, this.cellSize)
-      const alpha = this.renderPerlinPixel(px, py, vectors)
-
-      const terrain = this.getTerrainMap(alpha)
-
-      const bi = i * 4
-      buffer.data[bi] = terrain[0]
-      buffer.data[bi + 1] = terrain[1]
-      buffer.data[bi + 2] = terrain[2]
-      buffer.data[bi + 3] = 255
-    }
-
-    ctx.putImageData(buffer, x, y)
   }
 
   renderPerlinPixel(

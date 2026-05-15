@@ -112,14 +112,12 @@ function RendererStats({
       <div className="font-bold text-base">Renderer Stats</div>
       <RenderStatMouse controller={controller} />
       <RenderStatScroll controller={controller} />
-
       <div>
         Container: {w} x {h}
       </div>
       <div>
-        Spacer: {sw} x {sh}
+        Spacer: {sw} x {sh}{' '}
       </div>
-
       <hr className="pb-1" />
       <div className="space-x-2">
         <Checkbox

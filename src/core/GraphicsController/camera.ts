@@ -1,8 +1,8 @@
 import { proxy } from 'valtio'
 
+import { fract } from '#/utils/number'
 import type { GraphicsController } from './main'
 import { GraphicsControllerSubModule } from './submodule'
-import { fract } from '#/utils/number'
 
 export class GraphicsCameraController extends GraphicsControllerSubModule {
   get CELL_SIZE() {
@@ -186,8 +186,6 @@ export class GraphicsCameraController extends GraphicsControllerSubModule {
 
   constructor(gc: GraphicsController) {
     super(gc)
-
-    // TODO: Get from the
   }
 
   setup() {

@@ -134,8 +134,6 @@ export class EventAggregator extends EventEmitter {
   #render() {
     if (!this.ready) return
     const ctx = this.ctx
-    const w = this.canvas.width
-    const h = this.canvas.height
 
     this.emit('beforeRender')
 
@@ -145,16 +143,6 @@ export class EventAggregator extends EventEmitter {
     this.emit('render')
     ctx.fillStyle = 'black'
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
-
-    // ctx.strokeStyle = 'black'
-    // for (let i = 0; i < 50; i++) {
-    //   ctx.moveTo(i * this.CELL_SIZE, 0)
-    //   ctx.lineTo(i * this.CELL_SIZE, h)
-
-    //   ctx.moveTo(0, i * this.CELL_SIZE)
-    //   ctx.lineTo(w, i * this.CELL_SIZE)
-    // }
-    // ctx.stroke()
 
     this.renderMap()
   }

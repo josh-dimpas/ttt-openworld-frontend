@@ -1,5 +1,5 @@
-import { setAccessToken } from '#/server/auth';
-import type { UserData } from '#/types/auth';
+import { setAccessToken } from '#/server/auth'
+import type { UserData } from '#/types/auth'
 
 type BodyType = Record<string, any>
 type ExtraOpts = { context?: UserData; refresh?: boolean }

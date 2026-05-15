@@ -8,5 +8,14 @@
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
   },
-  "cSpell.words": ["canput", "fract", "gameid", "statechanged"]
+  "cSpell.words": [
+    "canput",
+    "fract",
+    "gameid",
+    "miny",
+    "mouseclick",
+    "reactuses",
+    "statechanged",
+    "valtio"
+  ]
 }
