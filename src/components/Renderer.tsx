@@ -136,16 +136,24 @@ function RendererStats({
 
 function RenderOtherMouse({ controller }: { controller: GraphicsController }) {
   const other = useSnapshot(controller.input.mouseOther)
+
   if (!controller.camera.canvas) return <div></div>
 
-  const { left, top } = controller.camera.canvasRect
+  const { left: l, top: t } = controller.camera.canvasRect
+
+  const ownOx = controller.camera.wox
+  const ownOy = controller.camera.woy
+  const CELL_SIZE = controller.camera.CELL_SIZE
+
+  const ox = (other.ox - ownOx) * CELL_SIZE
+  const oy = (other.oy - ownOy) * CELL_SIZE
+
+  const left = other.x + l - ox
+  const top = other.y + t - oy
 
   return (
     <div
-      style={{
-        left: other.x + left,
-        top: other.y + top,
-      }}
+      style={{ left, top }}
       className="0 fixed bg-transparent  border-black border-double transition-all rounded-none h-min font-black text-xl"
     >
       <div className="relative">
@@ -210,13 +218,15 @@ function RenderStatMouse({ controller }: { controller: GraphicsController }) {
 
 function RenderStatScroll({ controller }: { controller: GraphicsController }) {
   const scroll = useSnapshot(controller.camera.scroll)
+  const offset = useSnapshot(controller.camera.worldOffset)
 
   return (
     <div>
       Scroll:
       <span className="font-mono">
         {scroll.x}, {scroll.y}
-      </span>
+      </span>{' '}
+      ({offset.x}, {offset.y})
     </div>
   )
 }

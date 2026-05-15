@@ -16,6 +16,8 @@ export const Route = createFileRoute('/(auth)/lobby/join')({
   },
   staleTime: 0,
   gcTime: 0,
+  preloadStaleTime: 0,
+  preload: false,
 })
 
 function RouteComponent() {

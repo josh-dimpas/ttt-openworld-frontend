@@ -1,4 +1,4 @@
-import type { WSEvent } from '#/types/ws-events'
+import type { WSEvent, WSEvents } from '#/types/ws-events'
 import { EventEmitter } from './EventEmitter'
 
 export enum WebsocketState {
@@ -6,22 +6,6 @@ export enum WebsocketState {
   Connecting,
   Connected,
   Disconnected,
-}
-
-type WSEvents = {
-  statechanged: [state: WebsocketState]
-  connect: []
-  disconnect: [event: CloseEvent]
-  error: [event: Event]
-  message: [event: MessageEvent]
-
-  // App Specific Messages
-  'lobby:join': [payload: WSEvent.LobbyJoin]
-  'lobby:start': [payload: WSEvent.LobbyStart]
-  'lobby:leave': [payload: WSEvent.LobbyLeave]
-  'lobby:create': [payload: WSEvent.LobbyCreate]
-
-  'game:put': [payload: WSEvent.GamePutPiece]
 }
 
 export class WebsocketService extends EventEmitter<WSEvents> {
@@ -91,6 +75,7 @@ export class WebsocketService extends EventEmitter<WSEvents> {
       case 'lobby:leave':
       case 'lobby:create':
       case 'game:put':
+      case 'game:cursor':
         return type
       default:
         throw new Error(`Unhandled Event Type: ${type}`)
@@ -107,5 +92,13 @@ export class WebsocketService extends EventEmitter<WSEvents> {
     if (!this.ws || !this.connected) return
 
     this.ws.close()
+  }
+
+  send<TKey extends keyof WSEvents>(event: TKey, ...args: WSEvents[TKey]): void
+  async send(event: keyof WSEvents | string, ...args: unknown[]) {
+    // TODO: Implement message queue
+    if (!this.ws || !this.connected) return
+
+    this.ws.send(JSON.stringify({ type: event, ...args }))
   }
 }

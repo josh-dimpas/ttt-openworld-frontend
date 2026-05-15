@@ -7,6 +7,7 @@ import { currentLobbyFn } from '#/server/lobbies'
 import { createFileRoute, Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
+  ssr: false,
   component: Home,
   loader: async () => ({
     session: await currentUserFn(),
@@ -58,7 +59,7 @@ function Home() {
                       search={{}}
                       className="min-w-20 lg:min-w-45 text-xl uppercase tracking-wider btn grow"
                     >
-                      Create
+                      Host
                     </Link>
                   </Button>
                   <Button asChild variant={'accent'}>

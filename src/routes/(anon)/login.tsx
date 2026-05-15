@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { getRouter } from '#/router'
 import { loginFn } from '#/server/auth'
 import { AuthForms } from '@/components/blocks/auth-forms'
+import { useServerFn } from '@tanstack/react-start'
 
 export const Route = createFileRoute('/(anon)/login')({
   component: RouteComponent,
@@ -10,6 +11,7 @@ export const Route = createFileRoute('/(anon)/login')({
 
 function RouteComponent() {
   const router = getRouter()
+  const login = useServerFn(loginFn)
 
   return (
     <AuthForms.Login
@@ -18,7 +20,7 @@ function RouteComponent() {
       className="pt-24"
       onSignUp={() => router.navigate({ to: '/register' })}
       onSubmit={async (data) => {
-        await loginFn({ data })
+        await login({ data })
         router.navigate({ to: '/' })
       }}
     />

@@ -16,7 +16,6 @@ export function Aggregator({ controller, ...props }: AggregatorProps) {
       })
 
       console.log('STARTING')
-
       controller.start()
     }
 

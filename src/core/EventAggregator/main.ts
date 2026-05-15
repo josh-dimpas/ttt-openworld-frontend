@@ -8,7 +8,7 @@ export class EventAggregator extends EventEmitter {
   // @ts-expect-error initialized on component mount
   ctx: CanvasRenderingContext2D
 
-  CELL_SIZE = 40
+  CELL_SIZE = 20
 
   #running = false
   #animationId: number | null = null
@@ -178,7 +178,11 @@ export class EventAggregator extends EventEmitter {
       ctx.fillStyle = 'black'
       const ev = this.#pieces.get(this.createHash(_x, _y))
       if (ev && ev.event_type == 'put') {
-        this.ctx.fillText(ev.piece_type, x + halfCell, y + halfCell)
+        this.ctx.fillText(
+          ev.piece_type === 'O' ? 'X' : 'O',
+          x + halfCell,
+          y + halfCell,
+        )
       }
     }
 

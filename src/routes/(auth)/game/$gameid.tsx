@@ -62,10 +62,12 @@ function RouteComponent() {
       abort.signal,
     )
 
-    ws.on('game:cursor', ({ x, y, username }) => {
+    ws.on('game:cursor', ({ x, y, username, ox, oy }) => {
       const mop = controller.input.mouseOther
       mop.x = x
       mop.y = y
+      mop.ox = ox
+      mop.oy = oy
       mop.name = username
     })
 
@@ -73,15 +75,14 @@ function RouteComponent() {
   }, [])
 
   const onHover = useThrottleFn((x: number, y: number) => {
-    console.log(x, y)
     WebsocketService.instance.send('game:cursor', {
       game_id: parseInt(gameid),
       type: 'game:cursor',
       username: session.username,
       x,
       y,
-      ox: 0,
-      oy: 0,
+      ox: controller.camera.wox,
+      oy: controller.camera.woy,
     })
   }, 100)
 

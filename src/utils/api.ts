@@ -1,6 +1,5 @@
-import { env } from '#/env'
-import { setAccessToken } from '#/server/auth'
-import type { UserData } from '#/types/auth'
+import { setAccessToken } from '#/server/auth';
+import type { UserData } from '#/types/auth';
 
 type BodyType = Record<string, any>
 type ExtraOpts = { context?: UserData; refresh?: boolean }
@@ -32,7 +31,9 @@ class API {
   }
 
   path(path: string) {
-    return env.VITE_API_URL + path
+    const url = 'http://localhost:8000' + path
+    console.log(import.meta.env)
+    return url
   }
 
   async #processContext(context: UserData) {
