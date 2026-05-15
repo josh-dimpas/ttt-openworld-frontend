@@ -6,6 +6,7 @@ import { getGameEvents, getGameFn } from '#/server/games'
 import type { GameEvent } from '#/types/game'
 import { requireAuth } from '#/utils/session'
 import { createFileRoute, Link, redirect } from '@tanstack/react-router'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/(auth)/events/$gameid')({
   ssr: false,
@@ -52,18 +53,23 @@ function EventList({
   events: GameEvent[]
   onShow: (event: GameEvent, index: number) => void
 }) {
+  const [showing, setShowing] = useState<GameEvent | undefined>(undefined)
+
   return (
     <div className="flex flex-col min-h-0 overflow-auto">
       <div className="bg-white border-b-3 border-l-3 font-black text-center">
         Events
       </div>
-      <div className="flex flex-col min-h-0 overflow-auto">
+      <div className="flex flex-col min-h-0 overflow-y-auto overflow-x-hidden">
         {events.map((e, i) => {
           return (
             <Button
               key={e.id}
-              onMouseEnter={() => onShow(e, i)}
-              className="bg-white hover:bg-amber-400"
+              onMouseEnter={() => {
+                setShowing(e)
+                onShow(e, i)
+              }}
+              className={`bg-white hover:bg-amber-400 ${showing?.id === e.id && 'bg-amber-400'}`}
             >
               {e.piece_type} {e.event_type} {e.x}, {e.y}
             </Button>

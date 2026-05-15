@@ -1,22 +1,28 @@
 import React, { useEffect, useRef } from 'react'
 import { useSnapshot } from 'valtio'
 
+import { gameStore } from '#/stores/game'
+import { CursorIcon } from '@phosphor-icons/react/dist/ssr'
 import { useElementSize } from '@reactuses/core'
 import type { GraphicsController } from '../core/GraphicsController/main'
 import { BackButton } from './BackButton'
 import { Checkbox } from './ui/checkbox'
 import { Label } from './ui/label'
-import { gameStore } from '#/stores/game'
 
 type RendererProps = {
   controller: GraphicsController
+
   onPut: (x: number, y: number) => void
+  onHover: (x: number, y: number) => void
 } & React.ComponentProps<'div'>
 
 // The component for the custom renderer
 export function Renderer({
   controller,
+
   onPut,
+  onHover,
+
   className,
   ...props
 }: RendererProps) {
@@ -46,6 +52,8 @@ export function Renderer({
 
         return onPut(x, y)
       })
+
+      controller.on('mousemove', onHover)
     }
 
     return () => {
@@ -75,6 +83,7 @@ export function Renderer({
         containerRef={containerRef}
       />
       <RenderTurnStatus controller={controller} />
+      <RenderOtherMouse controller={controller} />
       <RenderScores controller={controller} />
       <div className="top-0 left-0 fixed bg-white pr-4 pl-2 border-3">
         <BackButton text="Exit" />
@@ -120,6 +129,36 @@ function RendererStats({
         <Label htmlFor="show-guidelines" className="text-xs">
           Show Noise Guidelines
         </Label>
+      </div>
+    </div>
+  )
+}
+
+function RenderOtherMouse({ controller }: { controller: GraphicsController }) {
+  const other = useSnapshot(controller.input.mouseOther)
+  if (!controller.camera.canvas) return <div></div>
+
+  const { left, top } = controller.camera.canvasRect
+
+  return (
+    <div
+      style={{
+        left: other.x + left,
+        top: other.y + top,
+      }}
+      className="0 fixed bg-transparent  border-black border-double transition-all rounded-none h-min font-black text-xl"
+    >
+      <div className="relative">
+        <CursorIcon
+          className="absolute top-0 left-0 text-cyan-950"
+          weight="fill"
+          size={12}
+          z={50}
+        />
+        <CursorIcon weight="fill" color="cyan" size={13} z={100} />
+        <div className="bg-cyan-700 text-cyan-100 border-2 px-1 py-0.5 rounded-[5px] translate-x-2 text-sm border-cyan-600">
+          {other.name}
+        </div>
       </div>
     </div>
   )

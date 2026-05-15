@@ -7,6 +7,7 @@ export class GraphicsInputController extends GraphicsControllerSubModule {
   #abortController = new AbortController()
 
   mouse = proxy({ x: 0, y: 0 })
+  mouseOther = proxy({ x: 0, y: 0, name: '' })
 
   get mx() {
     const left = this.camera.canvasRect.left
